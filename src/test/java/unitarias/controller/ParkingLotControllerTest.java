@@ -114,8 +114,7 @@ public class ParkingLotControllerTest {
 		int totalPrice;
 		String plate = "FCL799";
 		String type = "CAR";
-		when(parkingLotDomain.getHours(plate)).thenReturn(hour);
-		when(parkingLotDomain.getType(plate)).thenReturn("CAR");
+
 		//act
 		totalPrice = parkingLotController.calculatePayment(plate,type);
 		//assert
@@ -129,8 +128,7 @@ public class ParkingLotControllerTest {
 		int totalPrice;
 		String plate = "ELR01D";
 		String type = "BIKE";
-		when(parkingLotDomain.getHours(plate)).thenReturn(hour);
-		when(parkingLotDomain.getType(plate)).thenReturn("BIKE");
+	
 		//act
 		totalPrice = parkingLotController.calculatePayment(plate,type);
 		//assert
