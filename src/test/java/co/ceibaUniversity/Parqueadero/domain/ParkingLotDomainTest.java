@@ -52,6 +52,7 @@ public class ParkingLotDomainTest {
 	public void getTypeBikeTest() {
 		//arrange
 		String type;
+		Mockito.when(parkingLotDAO.getVehicleType(BIKE_PLATE)).thenReturn(BIKE);
 		//act
 		type = parkingLotDomain.getType(BIKE_PLATE);
 		//assert
@@ -61,6 +62,7 @@ public class ParkingLotDomainTest {
 	@Test
 	public void getTypeFailTest() {
 		String type;
+		Mockito.when(parkingLotDAO.getVehicleType(OTHER_PLATE)).thenReturn(OTHER);
 		type = parkingLotDomain.getType(OTHER_PLATE);
 		
 		assertEquals(OTHER,type);
