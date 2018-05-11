@@ -2,6 +2,7 @@ package co.ceibaUniversity.Parqueadero.dataBuilder;
 
 import java.util.Date;
 
+import co.ceibaUniversity.Parqueadero.model.Ticket;
 import co.ceibaUniversity.Parqueadero.model.Vehicle;
 
 public class VehicleTestDataBuilder {
@@ -37,7 +38,7 @@ public class VehicleTestDataBuilder {
 	}
 
 	public Vehicle build() {
-		return new Vehicle(this.type, this.plate, this.cc, this.entryDate);
+		return new Vehicle(this.type, this.plate, this.cc);
 	}
 	
 

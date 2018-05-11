@@ -1,5 +1,5 @@
 package co.ceibaUniversity.Parqueadero.dao;
 
-public class ParkingLotDAOTest {
+public class WatchmanDAOTest {
 
 }

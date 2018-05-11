@@ -2,6 +2,8 @@ package co.ceibaUniversity.Parqueadero.controllers;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,14 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import co.ceibaUniversity.Parqueadero.dataBuilder.VehicleTestDataBuilder;
-import co.ceibaUniversity.Parqueadero.domain.ParkingLotDomain;
+import co.ceibaUniversity.Parqueadero.domain.WatchmanDomain;
 import co.ceibaUniversity.Parqueadero.exception.ParkingLotException;
+import co.ceibaUniversity.Parqueadero.model.Ticket;
 import co.ceibaUniversity.Parqueadero.model.Vehicle;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ParkingLotControllerTest {
+public class WatchmanControllerTest {
 	
 	private static final String TRUCK = "TRUCK";
 	private static final int CAR_HOUR_PRICE = 1000;
@@ -28,9 +31,9 @@ public class ParkingLotControllerTest {
 	private static final int BIKE_DAY_PRICE = 4000;
 	
 	@Mock
-	private ParkingLotDomain parkingLotDomain;
+	private WatchmanDomain watchmanDomain;
 	@InjectMocks
-	private ParkingLotController parkingLotController;
+	private WatchmanController watchmanController;
 	
 	private VehicleTestDataBuilder vehicleTestDataBuilder;
 	private Vehicle vehicle;
@@ -40,14 +43,14 @@ public class ParkingLotControllerTest {
 	public void addVehicleCarTest() {
 		vehicleTestDataBuilder = new VehicleTestDataBuilder();
 		vehicle = vehicleTestDataBuilder.build();
-		Mockito.when(parkingLotDomain.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
-		Mockito.when(parkingLotDomain.vehicleDisponibility(vehicle.getType())).thenReturn(true);
-		Mockito.when(parkingLotDomain.plateValidToday(vehicle.getPlate())).thenReturn(true);
-		Mockito.when(parkingLotDomain.vehicleParked(vehicle.getPlate())).thenReturn(true);
+		Mockito.when(watchmanDomain.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
+		Mockito.when(watchmanDomain.vehicleDisponibility(vehicle.getType())).thenReturn(true);
+		Mockito.when(watchmanDomain.plateValidToday(vehicle.getPlate())).thenReturn(true);
+		Mockito.when(watchmanDomain.vehicleParked(vehicle.getPlate())).thenReturn(true);
 		//act
-		parkingLotController.addVehicle(vehicle);
+		watchmanController.addVehicle(vehicle);
 		//assert
-		assertTrue(parkingLotController.vehicleParked(vehicle.getPlate()));
+		assertTrue(watchmanController.vehicleParked(vehicle.getPlate()));
 	}
 	
 	@Test
@@ -56,14 +59,14 @@ public class ParkingLotControllerTest {
 		String type = "BIKE";
 		vehicleTestDataBuilder = new VehicleTestDataBuilder().usingType(type);
 		vehicle = vehicleTestDataBuilder.build();
-		Mockito.when(parkingLotDomain.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
-		Mockito.when(parkingLotDomain.vehicleDisponibility(vehicle.getType())).thenReturn(true);
-		Mockito.when(parkingLotDomain.plateValidToday(vehicle.getPlate())).thenReturn(true);
-		Mockito.when(parkingLotDomain.vehicleParked(vehicle.getPlate())).thenReturn(true);
+		Mockito.when(watchmanDomain.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
+		Mockito.when(watchmanDomain.vehicleDisponibility(vehicle.getType())).thenReturn(true);
+		Mockito.when(watchmanDomain.plateValidToday(vehicle.getPlate())).thenReturn(true);
+		Mockito.when(watchmanDomain.vehicleParked(vehicle.getPlate())).thenReturn(true);
 		//act
-		parkingLotController.addVehicle(vehicle);
+		watchmanController.addVehicle(vehicle);
 		//assert
-		assertTrue(parkingLotController.vehicleParked(vehicle.getPlate()));
+		assertTrue(watchmanController.vehicleParked(vehicle.getPlate()));
 	}
 	
 	@Test
@@ -71,14 +74,14 @@ public class ParkingLotControllerTest {
 		//arrange
 		vehicleTestDataBuilder = new VehicleTestDataBuilder();
 		vehicle = vehicleTestDataBuilder.build();
-		Mockito.when(parkingLotDomain.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
-		Mockito.when(parkingLotDomain.vehicleDisponibility(vehicle.getType())).thenReturn(false);
+		Mockito.when(watchmanDomain.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
+		Mockito.when(watchmanDomain.vehicleDisponibility(vehicle.getType())).thenReturn(false);
 		//act
 		try {
-			parkingLotController.addVehicle(vehicle);
+			watchmanController.addVehicle(vehicle);
 			fail();
 		}catch(ParkingLotException e) {
-			assertEquals(ParkingLotController.NO_SPACE, e.getMessage());
+			assertEquals(WatchmanController.NO_SPACE, e.getMessage());
 		}
 	}
 	
@@ -88,13 +91,13 @@ public class ParkingLotControllerTest {
 		String type = "BIKE";
 		vehicleTestDataBuilder = new VehicleTestDataBuilder().usingType(type);
 		vehicle = vehicleTestDataBuilder.build();
-		Mockito.when(parkingLotDomain.vehicleTypeAllowed(type)).thenReturn(true);
-		Mockito.when(parkingLotDomain.vehicleDisponibility(type)).thenReturn(false);
+		Mockito.when(watchmanDomain.vehicleTypeAllowed(type)).thenReturn(true);
+		Mockito.when(watchmanDomain.vehicleDisponibility(type)).thenReturn(false);
 		try {
-			parkingLotController.addVehicle(vehicle);
+			watchmanController.addVehicle(vehicle);
 			fail();
 		}catch(ParkingLotException e) {
-			assertEquals(ParkingLotController.NO_SPACE, e.getMessage());
+			assertEquals(WatchmanController.NO_SPACE, e.getMessage());
 		}
 	}
 	
@@ -102,14 +105,14 @@ public class ParkingLotControllerTest {
 	public void addVehicleNotAllowedDayTest() {
 		vehicleTestDataBuilder = new VehicleTestDataBuilder();
 		vehicle = vehicleTestDataBuilder.build();
-		Mockito.when(parkingLotDomain.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
-		Mockito.when(parkingLotDomain.vehicleDisponibility(vehicle.getType())).thenReturn(true);
-		Mockito.when(parkingLotDomain.plateValidToday(vehicle.getPlate())).thenReturn(false);		
+		Mockito.when(watchmanDomain.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
+		Mockito.when(watchmanDomain.vehicleDisponibility(vehicle.getType())).thenReturn(true);
+		Mockito.when(watchmanDomain.plateValidToday(vehicle.getPlate())).thenReturn(false);		
 		try {
-			parkingLotController.addVehicle(vehicle);
+			watchmanController.addVehicle(vehicle);
 			fail();
 		}catch(ParkingLotException e) {
-			assertEquals(ParkingLotController.NOT_BUSINESS_DAY, e.getMessage());
+			assertEquals(WatchmanController.NOT_BUSINESS_DAY, e.getMessage());
 		}
 	}
 	
@@ -117,12 +120,12 @@ public class ParkingLotControllerTest {
 	public void addVehicleNotTypeAllowed() {
 		vehicleTestDataBuilder = new VehicleTestDataBuilder().usingType(TRUCK);
 		vehicle = vehicleTestDataBuilder.build();
-		Mockito.when(parkingLotDomain.vehicleTypeAllowed(vehicle.getType())).thenReturn(false);
+		Mockito.when(watchmanDomain.vehicleTypeAllowed(vehicle.getType())).thenReturn(false);
 		try {
-			parkingLotController.addVehicle(vehicle);
+			watchmanController.addVehicle(vehicle);
 			fail();
 		}catch(ParkingLotException e) {
-			assertEquals(ParkingLotController.TYPE_NOT_ALLOWED, e.getMessage());
+			assertEquals(WatchmanController.TYPE_NOT_ALLOWED, e.getMessage());
 		}
 	}
 	
@@ -130,24 +133,25 @@ public class ParkingLotControllerTest {
 	public void getVehicleTest() {
 		vehicleTestDataBuilder = new VehicleTestDataBuilder().usingType(TRUCK);
 		vehicle = vehicleTestDataBuilder.build();
-		Mockito.when(parkingLotDomain.getVehicle(vehicle.getPlate())).thenReturn(vehicle);
-		
-		Vehicle vehicleGetted = parkingLotController.getVehiculo(vehicle.getPlate());
-	
-		assertEquals(vehicleGetted, vehicle);
+		Ticket ticket = new Ticket(vehicle.getType(), vehicle.getPlate(), vehicle.getCc(), new Date());
+		Mockito.when(watchmanDomain.getTicket(vehicle.getPlate())).thenReturn(ticket);
+
+		Ticket ticketGetted = watchmanController.getTicket(vehicle.getPlate());
+
+		assertEquals(ticketGetted.getPlate(), vehicle.getPlate());
 	}
-	
-	
+//	
+//	
 //	
 //	@Test
 //	public void removeVehicleTest() {
 //		//arrange
 //		String plate = "FCL798";
-//		Mockito.when(parkingLotDomain.vehicleParked(plate)).thenReturn(false);
+//		Mockito.when(watchmanDomain.vehicleParked(plate)).thenReturn(false);
 //		//act
-//		parkingLotController.removeVehicle(plate);
+//		watchmanController.removeVehicle(plate);
 //		//assert
-//		assertFalse(parkingLotController.vehicleParked(plate));
+//		assertFalse(watchmanController.vehicleParked(plate));
 //	}
 	
 //	@Test
@@ -159,7 +163,7 @@ public class ParkingLotControllerTest {
 //		String type = "CAR";
 //
 //		//act
-//		totalPrice = parkingLotController.calculatePayment(plate,type);
+//		totalPrice = watchmanController.calculatePayment(plate,type);
 //		//assert
 //		assertEquals(totalPrice,CAR_HOUR_PRICE*hour);
 //	}
@@ -173,7 +177,7 @@ public class ParkingLotControllerTest {
 //		String type = "BIKE";
 //	
 //		//act
-//		totalPrice = parkingLotController.calculatePayment(plate,type);
+//		totalPrice = watchmanController.calculatePayment(plate,type);
 //		//assert
 //		assertEquals(totalPrice,BIKE_HOUR_PRICE*hour);
 //	}
