@@ -46,7 +46,7 @@ public class WatchmanControllerTest {
 		Mockito.when(watchman.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
 		Mockito.when(watchman.vehicleDisponibility(vehicle.getType())).thenReturn(true);
 		Mockito.when(watchman.plateValidToday(vehicle.getPlate())).thenReturn(true);
-		Mockito.when(watchman.vehicleParked(vehicle.getPlate())).thenReturn(true);
+		Mockito.when(watchman.isVehicleParked(vehicle.getPlate())).thenReturn(true);
 		//act
 		watchmanController.addVehicle(vehicle);
 		//assert
@@ -62,7 +62,7 @@ public class WatchmanControllerTest {
 		Mockito.when(watchman.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
 		Mockito.when(watchman.vehicleDisponibility(vehicle.getType())).thenReturn(true);
 		Mockito.when(watchman.plateValidToday(vehicle.getPlate())).thenReturn(true);
-		Mockito.when(watchman.vehicleParked(vehicle.getPlate())).thenReturn(true);
+		Mockito.when(watchman.isVehicleParked(vehicle.getPlate())).thenReturn(true);
 		//act
 		watchmanController.addVehicle(vehicle);
 		//assert

@@ -1,5 +1,7 @@
 package co.ceibaUniversity.Parqueadero.dao;
 
+import java.util.Date;
+
 import org.springframework.stereotype.Service;
 
 import co.ceibaUniversity.Parqueadero.model.Ticket;
@@ -11,6 +13,6 @@ public interface ITicketDAO {
 	String getVehicleType(String plate);
 	void addTicket(Ticket ticket);
 	Ticket getTicket(String plate);
-	boolean isVehicleParked(String plate);
+	void removeVehicle(String plate, int totalHours, int totalPrice, Date date);
 	
 }

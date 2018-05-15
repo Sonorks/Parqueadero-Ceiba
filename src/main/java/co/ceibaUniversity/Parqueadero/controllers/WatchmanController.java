@@ -17,6 +17,7 @@ import co.ceibaUniversity.Parqueadero.model.Vehicle;
 @RestController
 public class WatchmanController {
 	
+	private static final String VEHICLE_NOT_FOUND = "El vehiculo buscado no se encuentra en la base de datos";
 	public static final String NOT_BUSINESS_DAY = "No puede ingresar porque no es un dia habil.";
 	public static final String TYPE_NOT_ALLOWED = "No puede ingresar porque este tipo de vehiculo no es permitido.";
 	public static final String NO_SPACE = "No puede ingresar porque no hay espacio en el parqueadero.";
@@ -40,16 +41,20 @@ public class WatchmanController {
 	}
 
 	public boolean vehicleParked(String plate) {
-		return watchman.vehicleParked(plate);
+		return watchman.isVehicleParked(plate);
 	}
 
-	public void removeVehicle(String plate) {
-		
+	@RequestMapping(value ="/parking/removeVehicle/{plate}", method = RequestMethod.PUT)
+	public void removeVehicle(@PathVariable String plate) {
+		watchman.removeVehicle(plate);		
 	}
 	
 	@RequestMapping("/parking/ticket/{plate}")
 	public Ticket getTicket(@PathVariable("plate") String plate) {
 		Ticket ticket = watchman.getTicket(plate);
+		if(ticket == null) {
+			throw new ParkingLotException(VEHICLE_NOT_FOUND);
+		}
 		return ticket;
 	}
 

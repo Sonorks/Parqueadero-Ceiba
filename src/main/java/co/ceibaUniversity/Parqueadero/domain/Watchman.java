@@ -71,51 +71,61 @@ public class Watchman {
 
 	public void addVehicle(Vehicle vehicle) {
 		Ticket ticket = new Ticket(vehicle.getType(), vehicle.getPlate(), vehicle.getCc(), new Date());
-		if(ticketDAO.isVehicleParked(vehicle.getPlate())) {
+		if(isVehicleParked(vehicle.getPlate())) {
 			throw new ParkingLotException(VEHICLE_ALREADY_PARKED);
 		}
 		ticketDAO.addTicket(ticket);
 	}
 
-	public boolean vehicleParked(String plate) {
+	public boolean isVehicleParked(String plate) {
 		Ticket ticket = getTicket(plate);
-		if (ticket.getExitDate().equals(null)) {
-			return true;
+		if(ticket == null) {
+			return false;
 		}
-		return false;
+		return (ticket.getExitDate() == null);
 	}
 
 	public Ticket getTicket(String plate) {
 		return ticketDAO.getTicket(plate);
 	}
 
-	public double calculatePayment(String type, int cc, Date entryDate) {
-		int totalHours = clock.getTotalHours(entryDate);
+
+	public double calculatePayment(String type, int cc, int totalHours) {
 		double totalPrice = 0;
-		if (type == Vehicle.CAR) {
-			if(totalHours >= MIN_HOURS_TO_PAY_BY_DAY && totalHours <= MAX_HOURS_TO_PAY_BY_DAY) {
-				totalPrice = CAR_DAY_PRICE;
-			} else if (totalHours > MAX_HOURS_TO_PAY_BY_DAY){
-				int extraHours = totalHours % MAX_HOURS_TO_PAY_BY_DAY;
-				totalPrice = (CAR_HOUR_PRICE*extraHours + CAR_DAY_PRICE*(totalHours/MAX_HOURS_TO_PAY_BY_DAY));
-			} else {
-				totalPrice = totalHours * CAR_HOUR_PRICE;
-			}
+		if (type.equals(Vehicle.CAR)) {
+			totalPrice = getTotalPrice(totalHours,CAR_DAY_PRICE,CAR_HOUR_PRICE);
 		}
-		else if (type == Vehicle.BIKE) {
-			if(totalHours >= MIN_HOURS_TO_PAY_BY_DAY && totalHours <= MAX_HOURS_TO_PAY_BY_DAY) {
-				totalPrice = BIKE_DAY_PRICE;
-			} else if (totalHours > MAX_HOURS_TO_PAY_BY_DAY) {
-				int extraHours = totalHours % MAX_HOURS_TO_PAY_BY_DAY;
-				totalPrice = (BIKE_HOUR_PRICE*extraHours + BIKE_DAY_PRICE*(totalHours/MAX_HOURS_TO_PAY_BY_DAY));
-			} else {
-				totalPrice = totalHours * BIKE_HOUR_PRICE;
-			}
+		else if (type.equals(Vehicle.BIKE)) {
+			totalPrice = getTotalPrice(totalHours,BIKE_DAY_PRICE,BIKE_HOUR_PRICE);
 			if(cc > 500) {
 				totalPrice += 2000;
 			}
 		}
 		return totalPrice;
+	}
+
+	private double getTotalPrice(int totalHours, double priceDay, double priceHour) {
+		double totalPrice;
+		if(totalHours >= MIN_HOURS_TO_PAY_BY_DAY && totalHours <= MAX_HOURS_TO_PAY_BY_DAY) {
+			totalPrice = priceDay;
+		} else if (totalHours > MAX_HOURS_TO_PAY_BY_DAY){
+			int extraHours = totalHours % MAX_HOURS_TO_PAY_BY_DAY;
+			if(extraHours > MIN_HOURS_TO_PAY_BY_DAY) {
+				totalPrice = (priceDay)*((totalHours/(MAX_HOURS_TO_PAY_BY_DAY))+1);
+			}else {
+				totalPrice = (priceHour*extraHours + priceDay*(totalHours/MAX_HOURS_TO_PAY_BY_DAY));
+			}
+		} else {
+			totalPrice = totalHours * priceHour;
+		}
+		return totalPrice;
+	}
+
+	public void removeVehicle(String plate) {
+		Ticket ticket = ticketDAO.getTicket(plate);
+		int totalHours = clock.getTotalHours(ticket.getEntryDate());
+		int totalPrice = (int) calculatePayment(ticket.getType(),ticket.getCc(),totalHours);
+		ticketDAO.removeVehicle(plate,totalHours,totalPrice, new Date());
 	}
 	
 	
