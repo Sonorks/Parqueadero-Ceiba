@@ -111,9 +111,9 @@ public class Watchman {
 		} else if (totalHours > MAX_HOURS_TO_PAY_BY_DAY){
 			int extraHours = totalHours % MAX_HOURS_TO_PAY_BY_DAY;
 			if(extraHours > MIN_HOURS_TO_PAY_BY_DAY) {
-				totalPrice = (priceDay)*(((double) totalHours/(MAX_HOURS_TO_PAY_BY_DAY))+1);
+				totalPrice = (priceDay)*((totalHours/(MAX_HOURS_TO_PAY_BY_DAY))+1);
 			}else {
-				totalPrice = (priceHour*extraHours + priceDay*((double) totalHours/MAX_HOURS_TO_PAY_BY_DAY));
+				totalPrice = (priceHour*extraHours + priceDay*(totalHours/MAX_HOURS_TO_PAY_BY_DAY));
 			}
 		} else {
 			totalPrice = totalHours * priceHour;

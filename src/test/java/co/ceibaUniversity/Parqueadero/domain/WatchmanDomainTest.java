@@ -205,7 +205,6 @@ public class WatchmanDomainTest {
 		String type = BIKE;
 		int totalHours = 28;
 		totalPrice = watchman.calculatePayment(type, 0, totalHours); 	
-		
 		assertTrue(totalPrice == 6000);
 	}
 	
