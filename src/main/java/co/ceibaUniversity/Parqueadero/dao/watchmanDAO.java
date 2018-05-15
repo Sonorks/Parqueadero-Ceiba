@@ -9,13 +9,11 @@ public class watchmanDAO implements IWatchmanDAO {
 
 	@Override
 	public int getCarSpaces() {
-		// TODO Auto-generated method stub
 		return 5;
 	}
 
 	@Override
 	public int getBikeSpaces() {
-		// TODO Auto-generated method stub
 		return 5;
 	}
 	

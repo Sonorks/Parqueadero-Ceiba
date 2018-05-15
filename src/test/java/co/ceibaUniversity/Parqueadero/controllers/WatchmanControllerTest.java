@@ -4,13 +4,11 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import co.ceibaUniversity.Parqueadero.dataBuilder.VehicleTestDataBuilder;
@@ -153,34 +151,6 @@ public class WatchmanControllerTest {
 //		//assert
 //		assertFalse(watchmanController.vehicleParked(plate));
 //	}
-	
-//	@Test
-//	public void makePaymentHoursCarTest() {
-//		//arrange
-//		int hour = 7;
-//		int totalPrice;
-//		String plate = "FCL799";
-//		String type = "CAR";
-//
-//		//act
-//		totalPrice = watchmanController.calculatePayment(plate,type);
-//		//assert
-//		assertEquals(totalPrice,CAR_HOUR_PRICE*hour);
-//	}
-//	
-//	@Test
-//	public void makePaymentHoursBikeTest() {
-//		//arrange
-//		int hour = 5;
-//		int totalPrice;
-//		String plate = "ELR01D";
-//		String type = "BIKE";
-//	
-//		//act
-//		totalPrice = watchmanController.calculatePayment(plate,type);
-//		//assert
-//		assertEquals(totalPrice,BIKE_HOUR_PRICE*hour);
-//	}
-	
+
 
 }

@@ -10,25 +10,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.ceibaUniversity.Parqueadero.exception.ParkingLotException;
 import co.ceibaUniversity.Parqueadero.model.Ticket;
-import co.ceibaUniversity.Parqueadero.model.Vehicle;
 
 @Transactional
 @Repository
 public class TicketDAO implements ITicketDAO {
 
-	
-	private static final String ERROR_GETTING_TICKET = "Error obteniendo ticket de la BD";
-	private static final String GET_TICKET_BY_TYPE_QUERY_ERROR = "Error obteniendo tipo de vehiculo.";
 	private static final String SAVE_TICKET_ERROR = "Error guardando ticket";
 	
 	private static final String GET_TICKET_BY_PLATE = "FROM Ticket as ticket WHERE ticket.plate = :plate";
-	private static final String GET_TICKET_BY_PLATE_QUERY = "FROM Ticket WHERE Ticket.plate = :plate";
-	private static final String GET_ALL_TICKETS = "FROM Ticket";
 	
 	private static final String GET_TICKET_QUERYPARAM_PLATE = "plate";
 
-
-	
 	@PersistenceContext
 	private EntityManager entityManager;
 	

@@ -2,7 +2,6 @@ package co.ceibaUniversity.Parqueadero.dataBuilder;
 
 import java.util.Date;
 
-import co.ceibaUniversity.Parqueadero.model.Ticket;
 import co.ceibaUniversity.Parqueadero.model.Vehicle;
 
 public class VehicleTestDataBuilder {

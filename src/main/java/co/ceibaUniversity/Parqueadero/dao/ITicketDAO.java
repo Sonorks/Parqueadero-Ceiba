@@ -5,7 +5,6 @@ import java.util.Date;
 import org.springframework.stereotype.Service;
 
 import co.ceibaUniversity.Parqueadero.model.Ticket;
-import co.ceibaUniversity.Parqueadero.model.Vehicle;
 
 @Service
 public interface ITicketDAO {

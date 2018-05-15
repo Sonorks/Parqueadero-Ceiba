@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.ceibaUniversity.Parqueadero.dao.ITicketDAO;
-import co.ceibaUniversity.Parqueadero.domain.CalendarParkingLot;
+
 import co.ceibaUniversity.Parqueadero.domain.Watchman;
 import co.ceibaUniversity.Parqueadero.exception.ParkingLotException;
 import co.ceibaUniversity.Parqueadero.model.Ticket;
@@ -57,18 +56,4 @@ public class WatchmanController {
 		}
 		return ticket;
 	}
-
-	public int calculatePayment(String plate, String type) {
-		
-		if(type == "CAR") {
-			return 7000;
-		}
-		else if(type == "BIKE") {
-			return 2500;
-		}
-		else {
-			return 0;
-		}
-	}
-
 }
