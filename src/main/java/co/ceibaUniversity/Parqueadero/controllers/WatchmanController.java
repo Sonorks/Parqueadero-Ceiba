@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.ceibaUniversity.Parqueadero.dao.ITicketDAO;
 import co.ceibaUniversity.Parqueadero.domain.CalendarParkingLot;
-import co.ceibaUniversity.Parqueadero.domain.WatchmanDomain;
+import co.ceibaUniversity.Parqueadero.domain.Watchman;
 import co.ceibaUniversity.Parqueadero.exception.ParkingLotException;
 import co.ceibaUniversity.Parqueadero.model.Ticket;
 import co.ceibaUniversity.Parqueadero.model.Vehicle;
@@ -23,24 +23,24 @@ public class WatchmanController {
 	
 	
 	@Autowired
-	private WatchmanDomain watchmanDomain;
+	private Watchman watchman;
 
 	@RequestMapping(value = "/parking/addVehicle", method = RequestMethod.POST)
 	public void addVehicle(@RequestBody Vehicle vehicle) {
-		if(!watchmanDomain.vehicleTypeAllowed(vehicle.getType())) {
+		if(!watchman.vehicleTypeAllowed(vehicle.getType())) {
 			throw new ParkingLotException(TYPE_NOT_ALLOWED);
 		}
-		if(!watchmanDomain.vehicleDisponibility(vehicle.getType())) {
+		if(!watchman.vehicleDisponibility(vehicle.getType())) {
 			throw new ParkingLotException(NO_SPACE);
 		}
-		if(!watchmanDomain.plateValidToday(vehicle.getPlate())) {
+		if(!watchman.plateValidToday(vehicle.getPlate())) {
 			throw new ParkingLotException(NOT_BUSINESS_DAY);
 		}
-		watchmanDomain.addVehicle(vehicle);
+		watchman.addVehicle(vehicle);
 	}
 
 	public boolean vehicleParked(String plate) {
-		return watchmanDomain.vehicleParked(plate);
+		return watchman.vehicleParked(plate);
 	}
 
 	public void removeVehicle(String plate) {
@@ -49,7 +49,7 @@ public class WatchmanController {
 	
 	@RequestMapping("/parking/ticket/{plate}")
 	public Ticket getTicket(@PathVariable("plate") String plate) {
-		Ticket ticket = watchmanDomain.getTicket(plate);
+		Ticket ticket = watchman.getTicket(plate);
 		return ticket;
 	}
 

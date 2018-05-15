@@ -1,0 +1,28 @@
+{
+    "run": {
+        "default": "",
+        "items": [
+            {
+                "name": "Parqueadero",
+                "projectName": "Parqueadero",
+                "workingDirectory": "c:\\Users\\julian.vasquez\\Desktop\\CeibaUniversity\\ejemplo",
+                "args": [],
+                "vmargs": [],
+                "preLaunchTask": ""
+            }
+        ]
+    },
+    "debug": {
+        "default": "",
+        "items": [
+            {
+                "name": "Parqueadero",
+                "projectName": "Parqueadero",
+                "workingDirectory": "c:\\Users\\julian.vasquez\\Desktop\\CeibaUniversity\\ejemplo",
+                "args": [],
+                "vmargs": [],
+                "preLaunchTask": ""
+            }
+        ]
+    }
+}

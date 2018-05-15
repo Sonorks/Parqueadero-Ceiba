@@ -52,17 +52,6 @@ public class TicketDAO implements ITicketDAO {
 		}
 	}
 
-	@Override
-	public int getCarSpaces() {
-		// TODO Auto-generated method stub
-		return 5;
-	}
-
-	@Override
-	public int getBikeSpaces() {
-		// TODO Auto-generated method stub
-		return 5;
-	}
 
 	@Override
 	public Ticket getTicket(String plate) {
@@ -70,6 +59,20 @@ public class TicketDAO implements ITicketDAO {
 			Ticket ticket = (Ticket) entityManager.createQuery(GET_TICKET_BY_PLATE)
 					.setParameter(GET_TICKET_QUERYPARAM_PLATE, plate).getSingleResult();
 			return ticket;
+		} catch (Exception e) {
+			throw new ParkingLotException("Error obteniendo ticket de la BD");
+		}
+	}
+	
+	@Override
+	public boolean isVehicleParked(String plate) {
+		try {
+			Ticket ticket = (Ticket) entityManager.createQuery(GET_TICKET_BY_PLATE)
+					.setParameter(GET_TICKET_QUERYPARAM_PLATE, plate).getSingleResult();
+			if(ticket.getExitDate() != null) {
+				return true;
+			}
+			return false;
 		} catch (Exception e) {
 			throw new ParkingLotException("Error obteniendo ticket de la BD");
 		}

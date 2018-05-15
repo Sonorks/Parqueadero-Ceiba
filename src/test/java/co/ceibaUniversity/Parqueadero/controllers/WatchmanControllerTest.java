@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import co.ceibaUniversity.Parqueadero.dataBuilder.VehicleTestDataBuilder;
-import co.ceibaUniversity.Parqueadero.domain.WatchmanDomain;
+import co.ceibaUniversity.Parqueadero.domain.Watchman;
 import co.ceibaUniversity.Parqueadero.exception.ParkingLotException;
 import co.ceibaUniversity.Parqueadero.model.Ticket;
 import co.ceibaUniversity.Parqueadero.model.Vehicle;
@@ -31,7 +31,7 @@ public class WatchmanControllerTest {
 	private static final int BIKE_DAY_PRICE = 4000;
 	
 	@Mock
-	private WatchmanDomain watchmanDomain;
+	private Watchman watchman;
 	@InjectMocks
 	private WatchmanController watchmanController;
 	
@@ -43,10 +43,10 @@ public class WatchmanControllerTest {
 	public void addVehicleCarTest() {
 		vehicleTestDataBuilder = new VehicleTestDataBuilder();
 		vehicle = vehicleTestDataBuilder.build();
-		Mockito.when(watchmanDomain.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
-		Mockito.when(watchmanDomain.vehicleDisponibility(vehicle.getType())).thenReturn(true);
-		Mockito.when(watchmanDomain.plateValidToday(vehicle.getPlate())).thenReturn(true);
-		Mockito.when(watchmanDomain.vehicleParked(vehicle.getPlate())).thenReturn(true);
+		Mockito.when(watchman.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
+		Mockito.when(watchman.vehicleDisponibility(vehicle.getType())).thenReturn(true);
+		Mockito.when(watchman.plateValidToday(vehicle.getPlate())).thenReturn(true);
+		Mockito.when(watchman.vehicleParked(vehicle.getPlate())).thenReturn(true);
 		//act
 		watchmanController.addVehicle(vehicle);
 		//assert
@@ -59,10 +59,10 @@ public class WatchmanControllerTest {
 		String type = "BIKE";
 		vehicleTestDataBuilder = new VehicleTestDataBuilder().usingType(type);
 		vehicle = vehicleTestDataBuilder.build();
-		Mockito.when(watchmanDomain.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
-		Mockito.when(watchmanDomain.vehicleDisponibility(vehicle.getType())).thenReturn(true);
-		Mockito.when(watchmanDomain.plateValidToday(vehicle.getPlate())).thenReturn(true);
-		Mockito.when(watchmanDomain.vehicleParked(vehicle.getPlate())).thenReturn(true);
+		Mockito.when(watchman.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
+		Mockito.when(watchman.vehicleDisponibility(vehicle.getType())).thenReturn(true);
+		Mockito.when(watchman.plateValidToday(vehicle.getPlate())).thenReturn(true);
+		Mockito.when(watchman.vehicleParked(vehicle.getPlate())).thenReturn(true);
 		//act
 		watchmanController.addVehicle(vehicle);
 		//assert
@@ -74,8 +74,8 @@ public class WatchmanControllerTest {
 		//arrange
 		vehicleTestDataBuilder = new VehicleTestDataBuilder();
 		vehicle = vehicleTestDataBuilder.build();
-		Mockito.when(watchmanDomain.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
-		Mockito.when(watchmanDomain.vehicleDisponibility(vehicle.getType())).thenReturn(false);
+		Mockito.when(watchman.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
+		Mockito.when(watchman.vehicleDisponibility(vehicle.getType())).thenReturn(false);
 		//act
 		try {
 			watchmanController.addVehicle(vehicle);
@@ -91,8 +91,8 @@ public class WatchmanControllerTest {
 		String type = "BIKE";
 		vehicleTestDataBuilder = new VehicleTestDataBuilder().usingType(type);
 		vehicle = vehicleTestDataBuilder.build();
-		Mockito.when(watchmanDomain.vehicleTypeAllowed(type)).thenReturn(true);
-		Mockito.when(watchmanDomain.vehicleDisponibility(type)).thenReturn(false);
+		Mockito.when(watchman.vehicleTypeAllowed(type)).thenReturn(true);
+		Mockito.when(watchman.vehicleDisponibility(type)).thenReturn(false);
 		try {
 			watchmanController.addVehicle(vehicle);
 			fail();
@@ -105,9 +105,9 @@ public class WatchmanControllerTest {
 	public void addVehicleNotAllowedDayTest() {
 		vehicleTestDataBuilder = new VehicleTestDataBuilder();
 		vehicle = vehicleTestDataBuilder.build();
-		Mockito.when(watchmanDomain.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
-		Mockito.when(watchmanDomain.vehicleDisponibility(vehicle.getType())).thenReturn(true);
-		Mockito.when(watchmanDomain.plateValidToday(vehicle.getPlate())).thenReturn(false);		
+		Mockito.when(watchman.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
+		Mockito.when(watchman.vehicleDisponibility(vehicle.getType())).thenReturn(true);
+		Mockito.when(watchman.plateValidToday(vehicle.getPlate())).thenReturn(false);		
 		try {
 			watchmanController.addVehicle(vehicle);
 			fail();
@@ -120,7 +120,7 @@ public class WatchmanControllerTest {
 	public void addVehicleNotTypeAllowed() {
 		vehicleTestDataBuilder = new VehicleTestDataBuilder().usingType(TRUCK);
 		vehicle = vehicleTestDataBuilder.build();
-		Mockito.when(watchmanDomain.vehicleTypeAllowed(vehicle.getType())).thenReturn(false);
+		Mockito.when(watchman.vehicleTypeAllowed(vehicle.getType())).thenReturn(false);
 		try {
 			watchmanController.addVehicle(vehicle);
 			fail();
@@ -134,7 +134,7 @@ public class WatchmanControllerTest {
 		vehicleTestDataBuilder = new VehicleTestDataBuilder().usingType(TRUCK);
 		vehicle = vehicleTestDataBuilder.build();
 		Ticket ticket = new Ticket(vehicle.getType(), vehicle.getPlate(), vehicle.getCc(), new Date());
-		Mockito.when(watchmanDomain.getTicket(vehicle.getPlate())).thenReturn(ticket);
+		Mockito.when(watchman.getTicket(vehicle.getPlate())).thenReturn(ticket);
 
 		Ticket ticketGetted = watchmanController.getTicket(vehicle.getPlate());
 
@@ -147,7 +147,7 @@ public class WatchmanControllerTest {
 //	public void removeVehicleTest() {
 //		//arrange
 //		String plate = "FCL798";
-//		Mockito.when(watchmanDomain.vehicleParked(plate)).thenReturn(false);
+//		Mockito.when(watchman.vehicleParked(plate)).thenReturn(false);
 //		//act
 //		watchmanController.removeVehicle(plate);
 //		//assert

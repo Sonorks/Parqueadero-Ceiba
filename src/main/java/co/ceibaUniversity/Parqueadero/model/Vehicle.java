@@ -11,6 +11,9 @@ import javax.persistence.Table;
 
 public class Vehicle {
 	
+	public static final String CAR = "CAR";
+	public static final String BIKE = "BIKE";
+	
 	private String plate;
 	private String type;
 	private int cc;

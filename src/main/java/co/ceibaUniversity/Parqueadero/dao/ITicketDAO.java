@@ -9,9 +9,8 @@ import co.ceibaUniversity.Parqueadero.model.Vehicle;
 public interface ITicketDAO {
 	
 	String getVehicleType(String plate);
-	void addTicket(Ticket vehicle);
-	int getCarSpaces();
-	int getBikeSpaces();
+	void addTicket(Ticket ticket);
 	Ticket getTicket(String plate);
+	boolean isVehicleParked(String plate);
 	
 }
