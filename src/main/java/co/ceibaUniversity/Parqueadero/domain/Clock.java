@@ -13,9 +13,8 @@ public class Clock {
 	public int getTotalHours(Date entryDate) {
 		Date exitDate = new Date();
 		int totalHours = (int) ((exitDate.getTime() - entryDate.getTime()) / MILLISECS_TO_HOURS);
-		if(totalHours == 0) {
-			return MIN_HOUR;
-		}
+		System.out.println("entry date: "+entryDate+" exitDate "+exitDate+" total hours "+totalHours);
+		totalHours = totalHours + MIN_HOUR;
 		return totalHours;
 	}
 

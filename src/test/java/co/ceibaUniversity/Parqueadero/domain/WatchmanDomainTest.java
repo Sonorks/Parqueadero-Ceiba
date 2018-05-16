@@ -16,7 +16,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import co.ceibaUniversity.Parqueadero.dao.ITicketDAO;
 import co.ceibaUniversity.Parqueadero.dao.IWatchmanDAO;
+import co.ceibaUniversity.Parqueadero.dataBuilder.VehicleTestDataBuilder;
 import co.ceibaUniversity.Parqueadero.model.Ticket;
+import co.ceibaUniversity.Parqueadero.model.Vehicle;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -138,6 +140,11 @@ public class WatchmanDomainTest {
 	}
 	
 	@Test
+	public void vehicleOtherDisponibilityTest() {
+		assertFalse(watchman.vehicleDisponibility(OTHER));
+	}
+	
+	@Test
 	public void calculateCarPaymentByHoursTest() {
 		double totalPrice = 0;
 		String type = CAR;
@@ -240,4 +247,12 @@ public class WatchmanDomainTest {
 		watchman.removeVehicle(plate);
 		assertFalse(watchman.isVehicleParked(plate));
 	}
+	
+	//FUNCIONAL
+	
+//	@Test
+//	public void addVehicleTest() {
+//		Vehicle vehicle = new VehicleTestDataBuilder().usingPlate("PRUEBA").build();
+//		assertEquals(ticketDAO.getTicket(vehicle.getPlate()), vehicle.getPlate());
+//	}
 }

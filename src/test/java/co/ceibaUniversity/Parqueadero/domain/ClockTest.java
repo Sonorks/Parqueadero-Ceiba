@@ -19,7 +19,7 @@ public class ClockTest {
 	public void calculateHoursTest() {
 		int hours=8;
 		Date date = new Date((long) (System.currentTimeMillis() - (hours*clock.MILLISECS_TO_HOURS)));;
-		assertEquals(clock.getTotalHours(date), hours);
+		assertEquals(clock.getTotalHours(date), hours+clock.MIN_HOUR);
 	}
 	
 	@Test
