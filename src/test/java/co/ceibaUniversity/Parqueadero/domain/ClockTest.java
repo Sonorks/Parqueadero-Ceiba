@@ -9,22 +9,24 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import co.ceibaUniversity.Parqueadero.domain.impl.Clock;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ClockTest {
 	
-	private Clock clock = new Clock();
+	private IClock clock = new Clock();
 	
 	@Test
 	public void calculateHoursTest() {
 		int hours=8;
-		Date date = new Date((long) (System.currentTimeMillis() - (hours*clock.MILLISECS_TO_HOURS)));;
-		assertEquals(clock.getTotalHours(date), hours+clock.MIN_HOUR);
+		Date date = new Date((long) (System.currentTimeMillis() - (hours*IClock.MILLISECS_TO_HOURS)));;
+		assertEquals(clock.getTotalHours(date), hours+IClock.MIN_HOUR);
 	}
 	
 	@Test
 	public void calculateZeroHoursTest() {
 		Date date = new Date();
-		assertEquals(clock.getTotalHours(date), clock.MIN_HOUR);
+		assertEquals(clock.getTotalHours(date), IClock.MIN_HOUR);
 	}
 }

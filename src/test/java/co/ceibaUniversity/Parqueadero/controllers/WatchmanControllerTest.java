@@ -12,7 +12,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import co.ceibaUniversity.Parqueadero.dataBuilder.VehicleTestDataBuilder;
-import co.ceibaUniversity.Parqueadero.domain.Watchman;
+import co.ceibaUniversity.Parqueadero.domain.impl.Watchman;
 import co.ceibaUniversity.Parqueadero.exception.ParkingLotException;
 import co.ceibaUniversity.Parqueadero.model.Ticket;
 import co.ceibaUniversity.Parqueadero.model.Vehicle;
@@ -23,10 +23,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class WatchmanControllerTest {
 	
 	private static final String TRUCK = "TRUCK";
-	private static final int CAR_HOUR_PRICE = 1000;
-	private static final int BIKE_HOUR_PRICE = 500;
-	private static final int CAR_DAY_PRICE = 8000;
-	private static final int BIKE_DAY_PRICE = 4000;
 	
 	@Mock
 	private Watchman watchman;

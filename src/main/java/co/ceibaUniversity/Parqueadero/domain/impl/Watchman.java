@@ -1,4 +1,4 @@
-package co.ceibaUniversity.Parqueadero.domain;
+package co.ceibaUniversity.Parqueadero.domain.impl;
 
 import java.util.Date;
 
@@ -7,26 +7,21 @@ import org.springframework.stereotype.Service;
 
 import co.ceibaUniversity.Parqueadero.dao.ITicketDAO;
 import co.ceibaUniversity.Parqueadero.dao.IWatchmanDAO;
+import co.ceibaUniversity.Parqueadero.domain.ICalendarParkingLot;
+import co.ceibaUniversity.Parqueadero.domain.IClock;
+import co.ceibaUniversity.Parqueadero.domain.IWatchman;
 import co.ceibaUniversity.Parqueadero.exception.ParkingLotException;
 import co.ceibaUniversity.Parqueadero.model.Ticket;
 import co.ceibaUniversity.Parqueadero.model.Vehicle;
 
 @Service
-public class Watchman {
-	
-	private static final String VEHICLE_ALREADY_PARKED = "El vehiculo ya se encuentra parqueado.";
-	public static final double CAR_HOUR_PRICE = 1000;
-	public static final double BIKE_HOUR_PRICE = 500;
-	public static final double CAR_DAY_PRICE = 8000;
-	public static final double BIKE_DAY_PRICE = 4000;
-	public static final double EXTRA_CC_BIKE_PRICE = 2000;
-	public static final int MIN_HOURS_TO_PAY_BY_DAY = 9;
-	public static final int MAX_HOURS_TO_PAY_BY_DAY = 24;
+public class Watchman implements IWatchman {
+
 
 	private ITicketDAO ticketDAO;
 	private IWatchmanDAO watchmanDAO;
-	private CalendarParkingLot calendario;
-	private Clock clock;
+	private ICalendarParkingLot calendario;
+	private IClock clock;
 
 	final private int MAX_CAR = 20;
 	final private int MAX_BIKE = 10;
@@ -40,15 +35,18 @@ public class Watchman {
 		this.clock = clock;
 	}
 	
+	@Override
 	public String getType(String plate) {
 		String type = ticketDAO.getVehicleType(plate);
 		return type;
 	}
 
+	@Override
 	public boolean vehicleTypeAllowed(String type) {
 		return (type.equals(Vehicle.CAR) || type.equals(Vehicle.BIKE));
 	}
 
+	@Override
 	public boolean plateValidToday(String plate) {
 		if(plate.startsWith("A")) {
 			return calendario.esDiaHabil();
@@ -57,6 +55,7 @@ public class Watchman {
 		}
 	}
 	
+	@Override
 	public boolean vehicleDisponibility(String type) {
 		if (type.equals(Vehicle.CAR)) {
 			int carSpacesUsed = watchmanDAO.getCarSpaces();
@@ -69,6 +68,7 @@ public class Watchman {
 		}
 	}
 
+	@Override
 	public void addVehicle(Vehicle vehicle) {
 		Ticket ticket = new Ticket(vehicle.getType(), vehicle.getPlate(), vehicle.getCc(), new Date());
 		if(isVehicleParked(vehicle.getPlate())) {
@@ -77,6 +77,7 @@ public class Watchman {
 		ticketDAO.addTicket(ticket);
 	}
 
+	@Override
 	public boolean isVehicleParked(String plate) {
 		Ticket ticket = ticketDAO.getTicket(plate);
 		if(ticket == null) {
@@ -85,11 +86,12 @@ public class Watchman {
 		return (ticket.getExitDate() == null);
 	}
 
+	@Override
 	public Ticket getTicket(String plate) {
 		return ticketDAO.getTicket(plate);
 	}
 
-
+	@Override
 	public double calculatePayment(String type, int cc, int totalHours) {
 		double totalPrice = 0;
 		if (type.equals(Vehicle.CAR)) {
@@ -121,6 +123,7 @@ public class Watchman {
 		return totalPrice;
 	}
 
+	@Override
 	public boolean removeVehicle(String plate) {
 		Ticket ticket = ticketDAO.getTicket(plate);
 		int totalHours = clock.getTotalHours(ticket.getEntryDate());

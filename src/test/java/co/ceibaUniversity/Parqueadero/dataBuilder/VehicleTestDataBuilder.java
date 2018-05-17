@@ -1,7 +1,5 @@
 package co.ceibaUniversity.Parqueadero.dataBuilder;
 
-import java.util.Date;
-
 import co.ceibaUniversity.Parqueadero.model.Vehicle;
 
 public class VehicleTestDataBuilder {
@@ -13,14 +11,12 @@ public class VehicleTestDataBuilder {
 	private String type;
 	private String plate;
 	private int cc;
-	private Date entryDate;
 	
 	
 	public VehicleTestDataBuilder() {
 		this.type = TYPE;
 		this.plate = PLATE;
 		this.cc = CC;
-		this.entryDate = new Date();
 	}
 	
 	public VehicleTestDataBuilder usingType(String type) {

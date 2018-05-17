@@ -16,9 +16,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import co.ceibaUniversity.Parqueadero.dao.ITicketDAO;
 import co.ceibaUniversity.Parqueadero.dao.IWatchmanDAO;
-import co.ceibaUniversity.Parqueadero.dataBuilder.VehicleTestDataBuilder;
+import co.ceibaUniversity.Parqueadero.domain.impl.CalendarParkingLot;
+import co.ceibaUniversity.Parqueadero.domain.impl.Clock;
+import co.ceibaUniversity.Parqueadero.domain.impl.Watchman;
 import co.ceibaUniversity.Parqueadero.model.Ticket;
-import co.ceibaUniversity.Parqueadero.model.Vehicle;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
