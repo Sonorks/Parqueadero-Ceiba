@@ -25,15 +25,5 @@ public class Vehicle {
 	public int getCc() {
 		return cc;
 	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	public void setPlate(String plate) {
-		this.plate = plate;
-	}
-	public void setCc(int cc) {
-		this.cc = cc;
-	}
-
 	
 }

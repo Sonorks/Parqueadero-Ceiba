@@ -27,7 +27,6 @@ public class WatchmanController {
 
 	@RequestMapping(value = "/parking/addVehicle", method = RequestMethod.POST)
 	public boolean addVehicle(@RequestBody Vehicle vehicle) {
-		System.out.println("Add vehicle");
 		if(!watchman.vehicleTypeAllowed(vehicle.getType())) {
 			throw new ParkingLotException(TYPE_NOT_ALLOWED);
 		}
@@ -47,8 +46,7 @@ public class WatchmanController {
 
 	@RequestMapping(value ="/parking/removeVehicle/{plate}", method = RequestMethod.PUT)
 	public boolean removeVehicle(@PathVariable String plate) {
-		watchman.removeVehicle(plate);
-		return true;
+		return watchman.removeVehicle(plate);
 	}
 	
 	@RequestMapping(value = "/parking/ticket/{plate}", method = RequestMethod.GET)

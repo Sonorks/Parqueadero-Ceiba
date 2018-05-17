@@ -138,19 +138,17 @@ public class WatchmanControllerTest {
 
 		assertEquals(ticketGetted.getPlate(), vehicle.getPlate());
 	}
-//	
-//	
-//	
-//	@Test
-//	public void removeVehicleTest() {
-//		//arrange
-//		String plate = "FCL798";
-//		Mockito.when(watchman.vehicleParked(plate)).thenReturn(false);
-//		//act
-//		watchmanController.removeVehicle(plate);
-//		//assert
-//		assertFalse(watchmanController.vehicleParked(plate));
-//	}
+	
+	
+	
+	@Test
+	public void removeVehicleTest() {
+		//arrange
+		String plate = "FCL798";
+		Mockito.when(watchman.removeVehicle(plate)).thenReturn(true);
+		//assert
+		assertTrue(watchmanController.removeVehicle(plate));
+	}
 
 
 }

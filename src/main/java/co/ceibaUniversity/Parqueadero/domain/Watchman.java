@@ -78,7 +78,7 @@ public class Watchman {
 	}
 
 	public boolean isVehicleParked(String plate) {
-		Ticket ticket = getTicket(plate);
+		Ticket ticket = ticketDAO.getTicket(plate);
 		if(ticket == null) {
 			return false;
 		}
@@ -121,11 +121,12 @@ public class Watchman {
 		return totalPrice;
 	}
 
-	public void removeVehicle(String plate) {
+	public boolean removeVehicle(String plate) {
 		Ticket ticket = ticketDAO.getTicket(plate);
 		int totalHours = clock.getTotalHours(ticket.getEntryDate());
 		int totalPrice = (int) calculatePayment(ticket.getType(),ticket.getCc(),totalHours);
 		ticketDAO.removeVehicle(plate,totalHours,totalPrice, new Date());
+		return true;
 	}
 	
 	

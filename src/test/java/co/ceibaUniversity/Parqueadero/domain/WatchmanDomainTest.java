@@ -248,11 +248,11 @@ public class WatchmanDomainTest {
 		assertFalse(watchman.isVehicleParked(plate));
 	}
 	
-	//FUNCIONAL
+	@Test
+	public void isVehicleParkedTest() {
+		String plate = CAR_PLATE;
+		Mockito.when(ticketDAO.getTicket(plate)).thenReturn(null);
+		assertFalse(watchman.isVehicleParked(plate));
+	}
 	
-//	@Test
-//	public void addVehicleTest() {
-//		Vehicle vehicle = new VehicleTestDataBuilder().usingPlate("PRUEBA").build();
-//		assertEquals(ticketDAO.getTicket(vehicle.getPlate()), vehicle.getPlate());
-//	}
 }
