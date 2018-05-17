@@ -2,7 +2,9 @@ package co.ceibaUniversity.Parqueadero.controllers;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -135,6 +137,20 @@ public class WatchmanControllerTest {
 		assertEquals(ticketGetted.getPlate(), vehicle.getPlate());
 	}
 	
+	@Test
+	public void getVehiclesTest() {
+		List<Ticket> ticketsGetted = null;
+		vehicleTestDataBuilder = new VehicleTestDataBuilder();
+		vehicle = vehicleTestDataBuilder.build();
+		Ticket ticket1 = new Ticket(vehicle.getType(), vehicle.getPlate(), vehicle.getCc(), new Date());
+		List<Ticket> tickets = new ArrayList<>();
+		tickets.add(ticket1);
+		
+		Mockito.when(watchman.getTickets()).thenReturn(tickets);
+
+		ticketsGetted = watchmanController.getTickets();
+		assertEquals(ticketsGetted.get(0).getPlate(),tickets.get(0).getPlate());
+	}
 	
 	
 	@Test

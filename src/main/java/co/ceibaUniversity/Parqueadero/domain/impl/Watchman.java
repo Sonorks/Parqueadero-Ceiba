@@ -1,6 +1,7 @@
 package co.ceibaUniversity.Parqueadero.domain.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,6 +87,11 @@ public class Watchman implements IWatchman {
 		return (ticket.getExitDate() == null);
 	}
 
+	@Override
+	public List<Ticket> getTickets() {
+		return ticketDAO.getTickets();
+	}
+	
 	@Override
 	public Ticket getTicket(String plate) {
 		return ticketDAO.getTicket(plate);

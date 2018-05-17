@@ -1,5 +1,7 @@
 package co.ceibaUniversity.Parqueadero.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,10 +17,11 @@ import co.ceibaUniversity.Parqueadero.model.Vehicle;
 @RestController
 public class WatchmanController {
 	
-	public static final String VEHICLE_NOT_FOUND = "El vehiculo buscado no se encuentra en la base de datos";
+	public static final String VEHICLES_NOT_FOUND = "No hay vehiculos en el parqueadero";
 	public static final String NOT_BUSINESS_DAY = "No puede ingresar porque no es un dia habil.";
 	public static final String TYPE_NOT_ALLOWED = "No puede ingresar porque este tipo de vehiculo no es permitido.";
 	public static final String NO_SPACE = "No puede ingresar porque no hay espacio en el parqueadero.";
+	private static final String VEHICLE_NOT_FOUND = "El vehiculo buscado no se encuentra en el parqueadero";
 	
 	
 	@Autowired
@@ -55,5 +58,14 @@ public class WatchmanController {
 			throw new ParkingLotException(VEHICLE_NOT_FOUND);
 		}
 		return ticket;
+	}
+	
+	@RequestMapping(value = "/parking/tickets/", method = RequestMethod.GET)
+	public List<Ticket> getTickets(){
+		List<Ticket> tickets = watchman.getTickets();
+		if(tickets == null) {
+			throw new ParkingLotException(VEHICLES_NOT_FOUND);
+		}
+		return tickets;
 	}
 }

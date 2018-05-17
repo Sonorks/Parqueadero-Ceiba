@@ -1,6 +1,7 @@
 package co.ceibaUniversity.Parqueadero.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -37,9 +38,8 @@ public class TicketDAO implements ITicketDAO {
 	@Override
 	public Ticket getTicket(String plate) {
 		try {
-			Ticket ticket = (Ticket) entityManager.createQuery(GET_TICKET_BY_PLATE)
+			return (Ticket) entityManager.createQuery(GET_TICKET_BY_PLATE)
 					.setParameter(GET_TICKET_QUERYPARAM_PLATE, plate).getSingleResult();
-			return ticket;
 		}catch(Exception e) {
 			return null;
 		}
@@ -53,6 +53,15 @@ public class TicketDAO implements ITicketDAO {
 		ticket.setTotalPrice(totalPrice);
 		ticket.setExitDate(date);
 		entityManager.flush();
+	}
+
+	@Override
+	public List<Ticket> getTickets() {
+		try {
+			return (List<Ticket>) entityManager.createQuery(GET_ALL_VEHICLES_PARKED).getResultList();
+		}catch(Exception e) {
+			return null;
+		}
 	}
 
 
