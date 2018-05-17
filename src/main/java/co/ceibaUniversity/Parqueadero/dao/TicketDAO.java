@@ -27,9 +27,10 @@ public class TicketDAO implements ITicketDAO {
 	}
 	
 	@Override
-	public void addTicket(Ticket ticket) {
+	public boolean addTicket(Ticket ticket) {
 		try {
 			entityManager.persist(ticket);
+			return true;
 		} catch (Exception e) {
 			throw new ParkingLotException(SAVE_TICKET_ERROR);
 		}
@@ -47,12 +48,13 @@ public class TicketDAO implements ITicketDAO {
 	
 
 	@Override
-	public void removeVehicle(String plate, int totalHours, int totalPrice, Date date) {
+	public boolean removeVehicle(String plate, int totalHours, int totalPrice, Date date) {
 		Ticket ticket = getTicket(plate);
 		ticket.setTotalHours(totalHours);
 		ticket.setTotalPrice(totalPrice);
 		ticket.setExitDate(date);
 		entityManager.flush();
+		return true;
 	}
 
 	@Override

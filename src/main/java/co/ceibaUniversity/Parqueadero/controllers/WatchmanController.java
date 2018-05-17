@@ -21,7 +21,7 @@ public class WatchmanController {
 	public static final String NOT_BUSINESS_DAY = "No puede ingresar porque no es un dia habil.";
 	public static final String TYPE_NOT_ALLOWED = "No puede ingresar porque este tipo de vehiculo no es permitido.";
 	public static final String NO_SPACE = "No puede ingresar porque no hay espacio en el parqueadero.";
-	private static final String VEHICLE_NOT_FOUND = "El vehiculo buscado no se encuentra en el parqueadero";
+	public static final String VEHICLE_NOT_FOUND = "El vehiculo buscado no se encuentra en el parqueadero";
 	
 	
 	@Autowired

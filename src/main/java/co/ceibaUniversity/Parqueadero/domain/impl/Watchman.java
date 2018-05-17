@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import co.ceibaUniversity.Parqueadero.dao.ITicketDAO;
 import co.ceibaUniversity.Parqueadero.dao.IWatchmanDAO;
+import co.ceibaUniversity.Parqueadero.dao.TicketDAO;
+import co.ceibaUniversity.Parqueadero.dao.WatchmanDAO;
 import co.ceibaUniversity.Parqueadero.domain.ICalendarParkingLot;
 import co.ceibaUniversity.Parqueadero.domain.IClock;
 import co.ceibaUniversity.Parqueadero.domain.IWatchman;
@@ -29,7 +31,7 @@ public class Watchman implements IWatchman {
 
 
 	@Autowired
-	public Watchman(ITicketDAO ticketDAO, IWatchmanDAO watchmanDAO, CalendarParkingLot calendario, Clock clock) {
+	public Watchman(TicketDAO ticketDAO, WatchmanDAO watchmanDAO, CalendarParkingLot calendario, Clock clock) {
 		this.watchmanDAO = watchmanDAO;
 		this.ticketDAO = ticketDAO;
 		this.calendario = calendario;
@@ -70,12 +72,12 @@ public class Watchman implements IWatchman {
 	}
 
 	@Override
-	public void addVehicle(Vehicle vehicle) {
+	public boolean addVehicle(Vehicle vehicle) {
 		Ticket ticket = new Ticket(vehicle.getType(), vehicle.getPlate(), vehicle.getCc(), new Date());
 		if(isVehicleParked(vehicle.getPlate())) {
 			throw new ParkingLotException(VEHICLE_ALREADY_PARKED);
 		}
-		ticketDAO.addTicket(ticket);
+		return ticketDAO.addTicket(ticket);
 	}
 
 	@Override

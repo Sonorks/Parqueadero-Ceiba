@@ -16,14 +16,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import co.ceibaUniversity.Parqueadero.dao.ITicketDAO;
 import co.ceibaUniversity.Parqueadero.dao.IWatchmanDAO;
+import co.ceibaUniversity.Parqueadero.dao.TicketDAO;
+import co.ceibaUniversity.Parqueadero.dao.WatchmanDAO;
+import co.ceibaUniversity.Parqueadero.dataBuilder.VehicleTestDataBuilder;
 import co.ceibaUniversity.Parqueadero.domain.impl.CalendarParkingLot;
 import co.ceibaUniversity.Parqueadero.domain.impl.Clock;
 import co.ceibaUniversity.Parqueadero.domain.impl.Watchman;
 import co.ceibaUniversity.Parqueadero.model.Ticket;
+import co.ceibaUniversity.Parqueadero.model.Vehicle;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class WatchmanDomainTest {
+public class WatchmanTest {
 
 	private static final String CAR_PLATE = "FCL799";
 	private static final String CAR = "CAR";
@@ -33,13 +37,13 @@ public class WatchmanDomainTest {
 	private static final String OTHER = "OTHER";
 
 	@Mock
-	private ITicketDAO ticketDAO;
+	private TicketDAO ticketDAO;
 
 	@Mock
 	private CalendarParkingLot calendar;
 	
 	@Mock 
-	private IWatchmanDAO watchmanDAO;
+	private WatchmanDAO watchmanDAO;
 	
 	@Mock
 	private Clock clock;
@@ -255,5 +259,15 @@ public class WatchmanDomainTest {
 		Mockito.when(ticketDAO.getTicket(plate)).thenReturn(null);
 		assertFalse(watchman.isVehicleParked(plate));
 	}
+	
+//	@Test
+//	public void addVehicleTest() {
+//		VehicleTestDataBuilder vehicleTestDataBuilder = new VehicleTestDataBuilder();
+//		Vehicle vehicle = vehicleTestDataBuilder.build();
+//		Ticket ticket = new Ticket(vehicle.getType(), vehicle.getPlate(), vehicle.getCc(), new Date());
+//		Mockito.when(ticketDAO.addTicket(ticket)).thenReturn(true);
+//		
+//		assertEquals(watchman.addVehicle(vehicle),true);
+//	}
 	
 }

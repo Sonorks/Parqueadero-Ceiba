@@ -24,7 +24,7 @@ public interface IWatchman {
 
 	boolean vehicleDisponibility(String type);
 
-	void addVehicle(Vehicle vehicle);
+	boolean addVehicle(Vehicle vehicle);
 
 	boolean isVehicleParked(String plate);
 

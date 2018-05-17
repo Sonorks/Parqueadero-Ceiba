@@ -17,8 +17,8 @@ public interface ITicketDAO {
 	
 	
 	String getVehicleType(String plate);
-	void addTicket(Ticket ticket);
-	void removeVehicle(String plate, int totalHours, int totalPrice, Date date);
+	boolean addTicket(Ticket ticket);
+	boolean removeVehicle(String plate, int totalHours, int totalPrice, Date date);
 	List<Ticket> getTickets();
 	Ticket getTicket(String plate);
 	

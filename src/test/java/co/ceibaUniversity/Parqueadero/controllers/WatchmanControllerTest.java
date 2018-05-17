@@ -156,11 +156,30 @@ public class WatchmanControllerTest {
 	@Test
 	public void removeVehicleTest() {
 		//arrange
-		String plate = "FCL798";
-		Mockito.when(watchman.removeVehicle(plate)).thenReturn(true);
+		Mockito.when(watchman.removeVehicle(VehicleTestDataBuilder.PLATE)).thenReturn(true);
 		//assert
-		assertTrue(watchmanController.removeVehicle(plate));
+		assertTrue(watchmanController.removeVehicle(VehicleTestDataBuilder.PLATE));
+	}
+	
+	@Test
+	public void getVehicleExceptionTest() {
+		Mockito.when(watchman.getTicket(VehicleTestDataBuilder.PLATE)).thenReturn(null);
+		try {
+			watchmanController.getTicket(VehicleTestDataBuilder.PLATE);
+			fail();
+		}catch(ParkingLotException e) {
+			assertEquals(WatchmanController.VEHICLE_NOT_FOUND, e.getMessage());
+		}
 	}
 
-
+	@Test
+	public void getVehiclesExceptionTest() {
+		Mockito.when(watchman.getTickets()).thenReturn(null);
+		try {
+			watchmanController.getTickets();
+			fail();
+		}catch(ParkingLotException e) {
+			assertEquals(WatchmanController.VEHICLES_NOT_FOUND, e.getMessage());
+		}
+	}
 }

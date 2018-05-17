@@ -4,9 +4,9 @@ import co.ceibaUniversity.Parqueadero.model.Vehicle;
 
 public class VehicleTestDataBuilder {
 	
-	private static final String TYPE = "CAR";
-	private static final String PLATE = "FCL799";
-	private static final int CC = 1400;
+	public static final String TYPE = "CAR";
+	public static final String PLATE = "FCL799";
+	public static final int CC = 1400;
 	
 	private String type;
 	private String plate;
