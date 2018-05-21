@@ -22,6 +22,7 @@ public class WatchmanController {
 	public static final String TYPE_NOT_ALLOWED = "No puede ingresar porque este tipo de vehiculo no es permitido.";
 	public static final String NO_SPACE = "No puede ingresar porque no hay espacio en el parqueadero.";
 	public static final String VEHICLE_NOT_FOUND = "El vehiculo buscado no se encuentra en el parqueadero";
+	public static final String VEHICLE_ALREADY_PARKED = "El vehiculo ya se encuentra parqueado.";
 	
 	
 	@Autowired
@@ -37,6 +38,9 @@ public class WatchmanController {
 		}
 		if(!watchman.plateValidToday(vehicle.getPlate())) {
 			throw new ParkingLotException(NOT_BUSINESS_DAY);
+		}
+		if(watchman.isVehicleParked(vehicle.getPlate())) {
+			throw new ParkingLotException(VEHICLE_ALREADY_PARKED);
 		}
 		watchman.addVehicle(vehicle);
 		return true;

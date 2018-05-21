@@ -10,10 +10,11 @@ import co.ceibaUniversity.Parqueadero.dao.ITicketDAO;
 import co.ceibaUniversity.Parqueadero.dao.IWatchmanDAO;
 import co.ceibaUniversity.Parqueadero.dao.TicketDAO;
 import co.ceibaUniversity.Parqueadero.dao.WatchmanDAO;
+import co.ceibaUniversity.Parqueadero.domain.ICalculator;
 import co.ceibaUniversity.Parqueadero.domain.ICalendarParkingLot;
 import co.ceibaUniversity.Parqueadero.domain.IClock;
+import co.ceibaUniversity.Parqueadero.domain.IDateFormatter;
 import co.ceibaUniversity.Parqueadero.domain.IWatchman;
-import co.ceibaUniversity.Parqueadero.exception.ParkingLotException;
 import co.ceibaUniversity.Parqueadero.model.Ticket;
 import co.ceibaUniversity.Parqueadero.model.Vehicle;
 
@@ -25,17 +26,22 @@ public class Watchman implements IWatchman {
 	private IWatchmanDAO watchmanDAO;
 	private ICalendarParkingLot calendario;
 	private IClock clock;
+	private IDateFormatter dateFormatter;
+	private ICalculator calculator;
 
 	final private int MAX_CAR = 20;
 	final private int MAX_BIKE = 10;
 
 
 	@Autowired
-	public Watchman(TicketDAO ticketDAO, WatchmanDAO watchmanDAO, CalendarParkingLot calendario, Clock clock) {
+	public Watchman(TicketDAO ticketDAO, WatchmanDAO watchmanDAO, CalendarParkingLot calendario, 
+					Clock clock, DateFormatter dateFormatter, Calculator calculator) {
 		this.watchmanDAO = watchmanDAO;
 		this.ticketDAO = ticketDAO;
 		this.calendario = calendario;
 		this.clock = clock;
+		this.dateFormatter = dateFormatter;
+		this.calculator = calculator;
 	}
 	
 	@Override
@@ -74,9 +80,6 @@ public class Watchman implements IWatchman {
 	@Override
 	public boolean addVehicle(Vehicle vehicle) {
 		Ticket ticket = new Ticket(vehicle.getType(), vehicle.getPlate(), vehicle.getCc(), new Date());
-		if(isVehicleParked(vehicle.getPlate())) {
-			throw new ParkingLotException(VEHICLE_ALREADY_PARKED);
-		}
 		return ticketDAO.addTicket(ticket);
 	}
 
@@ -91,22 +94,31 @@ public class Watchman implements IWatchman {
 
 	@Override
 	public List<Ticket> getTickets() {
+		List<Ticket> tickets= ticketDAO.getTickets();
+		for (Ticket ticket : tickets) {
+			ticket.setEntryDate(dateFormatter.formatDate(ticket.getEntryDate()));
+			ticket.setExitDate(dateFormatter.formatDate(ticket.getExitDate()));
+		}
 		return ticketDAO.getTickets();
 	}
 	
 	@Override
 	public Ticket getTicket(String plate) {
-		return ticketDAO.getTicket(plate);
+		Ticket ticket =  ticketDAO.getTicket(plate);
+		ticket.setEntryDate(dateFormatter.formatDate(ticket.getEntryDate()));
+		ticket.setExitDate(dateFormatter.formatDate(ticket.getExitDate()));
+		return ticket;
 	}
 
 	@Override
 	public double calculatePayment(String type, int cc, int totalHours) {
 		double totalPrice = 0;
 		if (type.equals(Vehicle.CAR)) {
-			totalPrice = getTotalPrice(totalHours,CAR_DAY_PRICE,CAR_HOUR_PRICE);
+			totalPrice = calculator.getTotalPrice(totalHours,CAR_DAY_PRICE,CAR_HOUR_PRICE);
 		}
 		else if (type.equals(Vehicle.BIKE)) {
-			totalPrice = getTotalPrice(totalHours,BIKE_DAY_PRICE,BIKE_HOUR_PRICE);
+			totalPrice = calculator.getTotalPrice(totalHours,BIKE_DAY_PRICE,BIKE_HOUR_PRICE);
+			System.out.println("En cobro por moto: "+totalPrice);
 			if(cc > 500) {
 				totalPrice += 2000;
 			}
@@ -114,22 +126,6 @@ public class Watchman implements IWatchman {
 		return totalPrice;
 	}
 
-	private double getTotalPrice(int totalHours, double priceDay, double priceHour) {
-		double totalPrice;
-		if(totalHours >= MIN_HOURS_TO_PAY_BY_DAY && totalHours <= MAX_HOURS_TO_PAY_BY_DAY) {
-			totalPrice = priceDay;
-		} else if (totalHours > MAX_HOURS_TO_PAY_BY_DAY){
-			int extraHours = totalHours % MAX_HOURS_TO_PAY_BY_DAY;
-			if(extraHours > MIN_HOURS_TO_PAY_BY_DAY) {
-				totalPrice = (priceDay)*((totalHours/(MAX_HOURS_TO_PAY_BY_DAY))+1);
-			}else {
-				totalPrice = (priceHour*extraHours + priceDay*(totalHours/MAX_HOURS_TO_PAY_BY_DAY));
-			}
-		} else {
-			totalPrice = totalHours * priceHour;
-		}
-		return totalPrice;
-	}
 
 	@Override
 	public boolean removeVehicle(String plate) {

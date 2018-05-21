@@ -14,13 +14,14 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import co.ceibaUniversity.Parqueadero.dao.ITicketDAO;
-import co.ceibaUniversity.Parqueadero.dao.IWatchmanDAO;
+
 import co.ceibaUniversity.Parqueadero.dao.TicketDAO;
 import co.ceibaUniversity.Parqueadero.dao.WatchmanDAO;
 import co.ceibaUniversity.Parqueadero.dataBuilder.VehicleTestDataBuilder;
+import co.ceibaUniversity.Parqueadero.domain.impl.Calculator;
 import co.ceibaUniversity.Parqueadero.domain.impl.CalendarParkingLot;
 import co.ceibaUniversity.Parqueadero.domain.impl.Clock;
+import co.ceibaUniversity.Parqueadero.domain.impl.DateFormatter;
 import co.ceibaUniversity.Parqueadero.domain.impl.Watchman;
 import co.ceibaUniversity.Parqueadero.model.Ticket;
 import co.ceibaUniversity.Parqueadero.model.Vehicle;
@@ -47,12 +48,18 @@ public class WatchmanTest {
 	
 	@Mock
 	private Clock clock;
+	
+	@Mock
+	private DateFormatter dateFormatter;
+	
+	@Mock
+	private Calculator calculator;
 
 	private Watchman watchman;
 
 	@Before
 	public void init() {
-		watchman = new Watchman(ticketDAO, watchmanDAO, calendar, clock);
+		watchman = new Watchman(ticketDAO, watchmanDAO, calendar, clock, dateFormatter, calculator);
 	}
 
 	@Test
@@ -154,7 +161,7 @@ public class WatchmanTest {
 		double totalPrice = 0;
 		String type = CAR;
 		int totalHours = 6;
-		
+		Mockito.when(calculator.getTotalPrice(totalHours, Watchman.CAR_DAY_PRICE, Watchman.CAR_HOUR_PRICE)).thenReturn((double) 6000);
 		totalPrice = watchman.calculatePayment(type, 0, totalHours);
 		
 		assertTrue(totalPrice == 6000);
@@ -165,7 +172,7 @@ public class WatchmanTest {
 		double totalPrice = 0;
 		String type = BIKE;
 		int totalHours = 6;
-		
+		Mockito.when(calculator.getTotalPrice(totalHours, Watchman.BIKE_DAY_PRICE, Watchman.BIKE_HOUR_PRICE)).thenReturn((double) 3000);
 		totalPrice = watchman.calculatePayment(type, 0, totalHours);
 		
 		assertTrue(totalPrice == 3000);
@@ -176,6 +183,7 @@ public class WatchmanTest {
 		double totalPrice = 0;
 		String type = CAR;
 		int totalHours = 10;
+		Mockito.when(calculator.getTotalPrice(totalHours, Watchman.CAR_DAY_PRICE, Watchman.CAR_HOUR_PRICE)).thenReturn((double) 8000);
 		totalPrice = watchman.calculatePayment(type, 0, totalHours);
 		
 		assertTrue(totalPrice == 8000);
@@ -186,6 +194,7 @@ public class WatchmanTest {
 		double totalPrice = 0;
 		String type = BIKE;
 		int totalHours = 10;
+		Mockito.when(calculator.getTotalPrice(totalHours, Watchman.BIKE_DAY_PRICE, Watchman.BIKE_HOUR_PRICE)).thenReturn((double) 4000);
 		totalPrice = watchman.calculatePayment(type, 0, totalHours);
 		
 		assertTrue(totalPrice == 4000);
@@ -196,6 +205,7 @@ public class WatchmanTest {
 		double totalPrice = 0;
 		String type = CAR;
 		int totalHours = 30;
+		Mockito.when(calculator.getTotalPrice(totalHours, Watchman.CAR_DAY_PRICE, Watchman.CAR_HOUR_PRICE)).thenReturn((double) 14000);
 		totalPrice = watchman.calculatePayment(type, 0, totalHours); 	
 		
 		assertTrue(totalPrice == 14000);
@@ -206,6 +216,7 @@ public class WatchmanTest {
 		double totalPrice = 0;
 		String type = CAR;
 		int totalHours = 34;
+		Mockito.when(calculator.getTotalPrice(totalHours, Watchman.CAR_DAY_PRICE, Watchman.CAR_HOUR_PRICE)).thenReturn((double) 16000);
 		totalPrice = watchman.calculatePayment(type, 0, totalHours); 	
 		
 		assertTrue(totalPrice == 16000);
@@ -216,6 +227,7 @@ public class WatchmanTest {
 		double totalPrice = 0;
 		String type = BIKE;
 		int totalHours = 28;
+		Mockito.when(calculator.getTotalPrice(totalHours, Watchman.BIKE_DAY_PRICE, Watchman.BIKE_HOUR_PRICE)).thenReturn((double) 6000);
 		totalPrice = watchman.calculatePayment(type, 0, totalHours); 	
 		assertTrue(totalPrice == 6000);
 	}
@@ -226,9 +238,10 @@ public class WatchmanTest {
 		String type = BIKE;
 		int CC = 650;
 		int totalHours = 28;
+		Mockito.when(calculator.getTotalPrice(totalHours, Watchman.BIKE_DAY_PRICE, Watchman.BIKE_HOUR_PRICE)).thenReturn((double) 6000);
 		totalPrice = watchman.calculatePayment(type, CC, totalHours); 	
 		
-		assertTrue(totalPrice == 8000);
+		assertTrue(totalPrice==8000);
 	}
 	
 	@Test 
@@ -237,6 +250,7 @@ public class WatchmanTest {
 		String type = BIKE;
 		int CC = 650;
 		int totalHours = 4;
+		Mockito.when(calculator.getTotalPrice(totalHours, Watchman.BIKE_DAY_PRICE, Watchman.BIKE_HOUR_PRICE)).thenReturn((double) 2000);
 		totalPrice = watchman.calculatePayment(type, CC, totalHours); 	
 		
 		assertTrue(totalPrice == 4000);
