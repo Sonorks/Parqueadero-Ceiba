@@ -29,6 +29,9 @@ public class WatchmanControllerGetAllTest {
 
 private TestRestTemplate restTemplate = new TestRestTemplate();
 	
+	@Test public void run() {
+		assertTrue(true);
+	}
 //	@LocalServerPort
 //    int randomServerPort;
 //	
