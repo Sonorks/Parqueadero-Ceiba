@@ -9,6 +9,10 @@ public class Vehicle {
 	private String type;
 	private int cc;
 	
+	public Vehicle() {
+		
+	}
+	
 	public Vehicle(String type, String plate, int cc) {
 		super();
 		this.type = type;
