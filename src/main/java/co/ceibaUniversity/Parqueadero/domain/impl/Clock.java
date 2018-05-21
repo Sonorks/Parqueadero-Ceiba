@@ -9,6 +9,9 @@ import co.ceibaUniversity.Parqueadero.domain.IClock;
 @Service
 public class Clock implements IClock {
 	
+	public static final int MILLISECS_TO_HOURS = 1000 * 60 * 60;
+	public static final int MIN_HOUR = 1;
+	
 	@Override
 	public int getTotalHours(Date entryDate) {
 		Date exitDate = new Date();

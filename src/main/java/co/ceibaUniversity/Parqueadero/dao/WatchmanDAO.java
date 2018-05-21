@@ -13,6 +13,9 @@ import co.ceibaUniversity.Parqueadero.exception.ParkingLotException;
 @Transactional
 @Repository
 public class WatchmanDAO implements IWatchmanDAO {
+	
+	public static final String COUNT_BIKESLOTS_QUERY = "SELECT COUNT(*) - COUNT(exit_date) FROM Ticket as ticket WHERE ticket.type = 'BIKE'";
+	public static final String COUNT_CARSLOTS_QUERY = "SELECT COUNT(*) - COUNT(exit_date) FROM Ticket as ticket WHERE ticket.type = 'CAR'";
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -34,7 +37,6 @@ public class WatchmanDAO implements IWatchmanDAO {
 					.createNativeQuery(query).getSingleResult();
 			return countResult.intValue();
 		}catch(Exception e) {
-			System.out.println(e);
 			throw new ParkingLotException(e.getMessage());
 		}
 	}

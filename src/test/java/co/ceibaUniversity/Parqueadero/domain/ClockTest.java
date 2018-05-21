@@ -20,13 +20,13 @@ public class ClockTest {
 	@Test
 	public void calculateHoursTest() {
 		int hours=8;
-		Date date = new Date((long) (System.currentTimeMillis() - (hours*IClock.MILLISECS_TO_HOURS)));;
-		assertEquals(clock.getTotalHours(date), hours+IClock.MIN_HOUR);
+		Date date = new Date((long) (System.currentTimeMillis() - (hours*Clock.MILLISECS_TO_HOURS)));;
+		assertEquals(clock.getTotalHours(date), hours+Clock.MIN_HOUR);
 	}
 	
 	@Test
 	public void calculateZeroHoursTest() {
 		Date date = new Date();
-		assertEquals(clock.getTotalHours(date), IClock.MIN_HOUR);
+		assertEquals(clock.getTotalHours(date), Clock.MIN_HOUR);
 	}
 }

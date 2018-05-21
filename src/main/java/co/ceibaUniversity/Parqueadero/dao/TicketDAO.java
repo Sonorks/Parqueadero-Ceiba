@@ -16,7 +16,10 @@ import co.ceibaUniversity.Parqueadero.model.Ticket;
 @Repository
 public class TicketDAO implements ITicketDAO {
 
-
+	public static final String SAVE_TICKET_ERROR = "Error guardando ticket";
+	public static final String GET_ALL_VEHICLES_PARKED = "FROM Ticket as ticket WHERE ticket.totalHours = 0";
+	public static final String GET_TICKET_BY_PLATE = "FROM Ticket as ticket WHERE ticket.plate = :plate";
+	public static final String GET_TICKET_QUERYPARAM_PLATE = "plate";
 
 	@PersistenceContext
 	private EntityManager entityManager;

@@ -20,7 +20,16 @@ import co.ceibaUniversity.Parqueadero.model.Vehicle;
 
 @Service
 public class Watchman implements IWatchman {
-
+	
+	public static final double CAR_HOUR_PRICE = 1000;
+	public static final double BIKE_HOUR_PRICE = 500;
+	public static final double CAR_DAY_PRICE = 8000;
+	public static final double BIKE_DAY_PRICE = 4000;
+	public static final double EXTRA_CC_BIKE_PRICE = 2000;
+	public static final int MIN_HOURS_TO_PAY_BY_DAY = 9;
+	public static final int MAX_HOURS_TO_PAY_BY_DAY = 24;
+	public static final int MAX_CAR = 20;
+	public static final int MAX_BIKE = 10;
 
 	private ITicketDAO ticketDAO;
 	private IWatchmanDAO watchmanDAO;
@@ -29,8 +38,7 @@ public class Watchman implements IWatchman {
 	private IDateFormatter dateFormatter;
 	private ICalculator calculator;
 
-	final private int MAX_CAR = 20;
-	final private int MAX_BIKE = 10;
+
 
 
 	@Autowired
@@ -46,8 +54,7 @@ public class Watchman implements IWatchman {
 	
 	@Override
 	public String getType(String plate) {
-		String type = ticketDAO.getVehicleType(plate);
-		return type;
+		return ticketDAO.getVehicleType(plate);
 	}
 
 	@Override
@@ -57,7 +64,7 @@ public class Watchman implements IWatchman {
 
 	@Override
 	public boolean plateValidToday(String plate) {
-		if(plate.startsWith("A")) {
+		if(plate.startsWith("A") || plate.startsWith("a")) {
 			return calendario.esDiaHabil();
 		} else {
 			return true;
