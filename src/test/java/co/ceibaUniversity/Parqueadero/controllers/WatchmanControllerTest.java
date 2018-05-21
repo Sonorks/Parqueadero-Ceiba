@@ -111,7 +111,7 @@ public class WatchmanControllerTest {
 	}
 	
 	@Test
-	public void addVehicleNotTypeAllowed() {
+	public void addVehicleNotTypeAllowedTest() {
 		vehicleTestDataBuilder = new VehicleTestDataBuilder().usingType(TRUCK);
 		vehicle = vehicleTestDataBuilder.build();
 		Mockito.when(watchman.vehicleTypeAllowed(vehicle.getType())).thenReturn(false);
@@ -121,6 +121,24 @@ public class WatchmanControllerTest {
 		}catch(ParkingLotException e) {
 			assertEquals(WatchmanController.TYPE_NOT_ALLOWED, e.getMessage());
 		}
+	}
+	
+	@Test
+	public void addVehicleAlreadyParkedTest() {
+		//arrange
+				String type = "BIKE";
+				vehicleTestDataBuilder = new VehicleTestDataBuilder().usingType(type);
+				vehicle = vehicleTestDataBuilder.build();
+				Mockito.when(watchman.vehicleTypeAllowed(vehicle.getType())).thenReturn(true);
+				Mockito.when(watchman.vehicleDisponibility(vehicle.getType())).thenReturn(true);
+				Mockito.when(watchman.plateValidToday(vehicle.getPlate())).thenReturn(true);
+				Mockito.when(watchman.isVehicleParked(vehicle.getPlate())).thenReturn(true);
+				try {
+					watchmanController.addVehicle(vehicle);
+					fail();
+				}catch(ParkingLotException e) {
+					assertEquals(WatchmanController.VEHICLE_ALREADY_PARKED, e.getMessage());
+				}
 	}
 	
 	@Test

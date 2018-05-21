@@ -17,7 +17,6 @@ public class DateFormatter implements IDateFormatter {
 	public Date formatDate(Date date) {
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 		String stringDate = sdf.format(date);
-		System.out.println(stringDate);
 		try {
 			return sdf.parse(stringDate);
 		} catch (Exception e) {

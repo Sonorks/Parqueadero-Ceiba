@@ -97,7 +97,6 @@ public class Watchman implements IWatchman {
 		List<Ticket> tickets= ticketDAO.getTickets();
 		for (Ticket ticket : tickets) {
 			ticket.setEntryDate(dateFormatter.formatDate(ticket.getEntryDate()));
-			ticket.setExitDate(dateFormatter.formatDate(ticket.getExitDate()));
 		}
 		return ticketDAO.getTickets();
 	}
