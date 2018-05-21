@@ -50,7 +50,7 @@ public class WatchmanController {
 		return watchman.isVehicleParked(plate);
 	}
 
-	@RequestMapping(value ="/parking/removeVehicle/{plate}", method = RequestMethod.PUT)
+	@RequestMapping(value ="/parking/removeVehicle/{plate}", method = RequestMethod.POST)
 	public boolean removeVehicle(@PathVariable String plate) {
 		return watchman.removeVehicle(plate);
 	}

@@ -66,6 +66,10 @@ public class TicketDAO implements ITicketDAO {
 		}
 	}
 
+	public void deleteVehicle(String plate) {
+		entityManager.remove(getTicket(plate));
+	}
+
 
 	
 }

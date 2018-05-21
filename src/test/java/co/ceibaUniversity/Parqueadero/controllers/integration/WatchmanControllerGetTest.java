@@ -1,0 +1,51 @@
+package co.ceibaUniversity.Parqueadero.controllers.integration;
+
+import static org.junit.Assert.assertEquals;
+
+import java.util.Date;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import co.ceibaUniversity.Parqueadero.dao.TicketDAO;
+import co.ceibaUniversity.Parqueadero.dataBuilder.VehicleTestDataBuilder;
+import co.ceibaUniversity.Parqueadero.model.Ticket;
+import co.ceibaUniversity.Parqueadero.model.Vehicle;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class WatchmanControllerGetTest {
+	
+	private TestRestTemplate restTemplate = new TestRestTemplate();
+	
+	@Autowired
+	TicketDAO ticketDAO;
+	
+	@Before
+	public void addVehicleToDB() {
+		VehicleTestDataBuilder vehicleTestDataBuilder = new VehicleTestDataBuilder().usingPlate("PRUEBAGET");
+		Vehicle vehicle = vehicleTestDataBuilder.build();
+		Ticket ticket = new Ticket(vehicle.getType(),vehicle.getPlate(),vehicle.getCc(), new Date());
+		ticket.setExitDate(new Date());
+		ticket.setTotalHours(1);
+		ticketDAO.addTicket(ticket);
+	}
+	
+	@Test
+	public void getVehicleByPlateTest() {
+		ResponseEntity<Ticket> responseEntity = 
+				restTemplate.getForEntity("http://localhost:8090/parking/ticket/PRUEBAGET", Ticket.class);
+		Ticket respuesta = responseEntity.getBody();
+		
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals("PRUEBAGET",respuesta.getPlate());
+	}
+
+}
