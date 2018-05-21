@@ -23,10 +23,6 @@ public class CorsFilter implements javax.servlet.Filter {
 		res.addHeader("Access-Control-Allow-Origin", "*");
 		res.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS");
 		res.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Accept-Encoding, Accept-Language, Host, Referer, Connection, User-Agent, authorization");
-		if (req.getMethod().equals("OPTIONS")) {
-			res.setStatus(HttpServletResponse.SC_OK);
-			return;
-		}
 		chain.doFilter(request, response);
 	}
 	@Override

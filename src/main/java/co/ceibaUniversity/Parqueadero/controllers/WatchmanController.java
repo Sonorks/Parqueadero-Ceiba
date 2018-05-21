@@ -46,10 +46,6 @@ public class WatchmanController {
 		return true;
 	}
 
-	public boolean vehicleParked(String plate) {
-		return watchman.isVehicleParked(plate);
-	}
-
 	@RequestMapping(value ="/parking/removeVehicle/{plate}", method = RequestMethod.POST)
 	public boolean removeVehicle(@PathVariable String plate) {
 		return watchman.removeVehicle(plate);
