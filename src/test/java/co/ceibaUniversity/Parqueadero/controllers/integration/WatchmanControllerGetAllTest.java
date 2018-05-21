@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -32,35 +33,35 @@ private TestRestTemplate restTemplate = new TestRestTemplate();
 	@Test public void run() {
 		assertTrue(true);
 	}
-//	@LocalServerPort
-//    int randomServerPort;
-//	
-//	@Autowired
-//	TicketDAO ticketDAO;
-//	
-//	@Before
-//	public void addVehicleToDB() {
-//		VehicleTestDataBuilder vehicleTestDataBuilder = new VehicleTestDataBuilder().usingPlate("PRUEBAGETALL");
-//		Vehicle vehicle = vehicleTestDataBuilder.build();
-//		Ticket ticket = new Ticket(vehicle.getType(),vehicle.getPlate(),vehicle.getCc(), new Date());
-//		ticket.setExitDate(new Date());
-//		ticket.setTotalHours(1);
-//		ticketDAO.addTicket(ticket);
-//	}
-//	
-//	@After
-//	public void removeVehicleFromDB() {
-//		ticketDAO.deleteVehicle("PRUEBAGETALL");
-//	}
-//	
-//	@Test
-//	public void getVehicleByPlateTest() {
-//		ResponseEntity<Ticket> responseEntity = 
-//				restTemplate.getForEntity("http://localhost:"+randomServerPort+"/parking/tickets/", Ticket.class);
-//		Ticket respuesta = responseEntity.getBody();
-//		
-//		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//		assertEquals("PRUEBAGET",respuesta.getPlate());
-//	}
+	@LocalServerPort
+    int randomServerPort;
+	
+	@Autowired
+	TicketDAO ticketDAO;
+	
+	@Before
+	public void addVehicleToDB() {
+		VehicleTestDataBuilder vehicleTestDataBuilder = new VehicleTestDataBuilder().usingPlate("PRUEBAGETALL");
+		Vehicle vehicle = vehicleTestDataBuilder.build();
+		Ticket ticket = new Ticket(vehicle.getType(),vehicle.getPlate(),vehicle.getCc(), new Date());
+		ticket.setExitDate(new Date());
+		ticket.setTotalHours(1);
+		ticketDAO.addTicket(ticket);
+	}
+	
+	@After
+	public void removeVehicleFromDB() {
+		ticketDAO.deleteVehicle("PRUEBAGETALL");
+	}
+	
+	@Test
+	public void getVehicleByPlateTest() {
+		ResponseEntity<String> responseEntity = 
+				restTemplate.exchange("http://localhost:"+randomServerPort+"/parking/tickets/", 
+						HttpMethod.GET, 
+						null, 
+						String.class);
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+	}
 
 }
