@@ -117,7 +117,6 @@ public class Watchman implements IWatchman {
 		}
 		else if (type.equals(Vehicle.BIKE)) {
 			totalPrice = calculator.getTotalPrice(totalHours,BIKE_DAY_PRICE,BIKE_HOUR_PRICE);
-			System.out.println("En cobro por moto: "+totalPrice);
 			if(cc > 500) {
 				totalPrice += 2000;
 			}

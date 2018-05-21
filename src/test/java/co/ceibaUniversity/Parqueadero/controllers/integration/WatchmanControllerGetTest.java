@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +37,11 @@ public class WatchmanControllerGetTest {
 		ticket.setExitDate(new Date());
 		ticket.setTotalHours(1);
 		ticketDAO.addTicket(ticket);
+	}
+	
+	@After
+	public void removeVehicleFromDB() {
+		ticketDAO.deleteVehicle("PRUEBAGET");
 	}
 	
 	@Test
