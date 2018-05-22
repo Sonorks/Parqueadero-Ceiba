@@ -1,5 +1,7 @@
 package co.ceibaUniversity.Parqueadero.controllers;
 
+import java.rmi.RemoteException;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ import co.ceibaUniversity.Parqueadero.domain.IWatchman;
 import co.ceibaUniversity.Parqueadero.exception.ParkingLotException;
 import co.ceibaUniversity.Parqueadero.model.Ticket;
 import co.ceibaUniversity.Parqueadero.model.Vehicle;
+import co.com.sc.nexura.superfinanciera.action.generic.services.trm.action.TCRMServicesInterfaceProxy;
+import co.com.sc.nexura.superfinanciera.action.generic.services.trm.action.TcrmResponse;
 
 @RestController
 public class WatchmanController {
@@ -23,6 +27,7 @@ public class WatchmanController {
 	public static final String NO_SPACE = "No puede ingresar porque no hay espacio en el parqueadero.";
 	public static final String VEHICLE_NOT_FOUND = "El vehiculo buscado no se encuentra en el parqueadero";
 	public static final String VEHICLE_ALREADY_PARKED = "El vehiculo ya se encuentra parqueado.";
+	
 	
 	
 	@Autowired
@@ -67,5 +72,18 @@ public class WatchmanController {
 			throw new ParkingLotException(VEHICLES_NOT_FOUND);
 		}
 		return tickets;
+	}
+	
+	@RequestMapping(value ="/parking/trm", method = RequestMethod.GET)
+	public String getTRM() {
+		TcrmResponse response;
+		String WDSL = "https://www.superfinanciera.gov.co/SuperfinancieraWebServiceTRM/TCRMServicesWebService/TCRMServicesWebService?WSDL";
+		TCRMServicesInterfaceProxy trmService = new TCRMServicesInterfaceProxy(WDSL);
+		try {
+			response = trmService.queryTCRM(null);
+		} catch (Exception e) {
+			throw new ParkingLotException(e.getMessage());
+		}
+		return response.getValue().toString();
 	}
 }
