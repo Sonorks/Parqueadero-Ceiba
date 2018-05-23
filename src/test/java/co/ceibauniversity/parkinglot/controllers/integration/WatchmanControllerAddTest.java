@@ -2,8 +2,8 @@ package co.ceibauniversity.parkinglot.controllers.integration;
 
 import static org.junit.Assert.*;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.LinkedHashMap;
+
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,14 +63,16 @@ public class WatchmanControllerAddTest {
 	}
 	
 
+	@SuppressWarnings("rawtypes")
 	@Test
-	public void addVehicleFailTest() throws JSONException {
+	public void addVehicleFailTest(){
 		VehicleTestDataBuilder vehicleTestDataBuilder = new VehicleTestDataBuilder().usingPlate("PRUEBA").usingType(Vehicle.BIKE);
 		Vehicle vehicle = vehicleTestDataBuilder.build();	
 		restTemplate.postForEntity("http://localhost:"+randomServerPort+"/parking/addVehicle",vehicle, Boolean.class);
-		ResponseEntity<JSONObject> responseEntity = 
-				restTemplate.postForEntity("http://localhost:"+randomServerPort+"/parking/addVehicle",vehicle, JSONObject.class);
-		JSONObject response = responseEntity.getBody();
+		ResponseEntity<LinkedHashMap> responseEntity = 
+				restTemplate.postForEntity("http://localhost:"+randomServerPort+"/parking/addVehicle",vehicle, LinkedHashMap.class);
+		LinkedHashMap response =  responseEntity.getBody();
+		System.out.println(response);
 		assertEquals(WatchmanController.VEHICLE_ALREADY_PARKED, response.get("message"));
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
 	}
