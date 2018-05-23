@@ -124,6 +124,20 @@ public class WatchmanTest {
 		Mockito.when(calendar.esDiaHabil()).thenReturn(false);
 		assertFalse(watchman.plateValidToday(plate));
 	}
+	
+	@Test
+	public void plateInitaValidDayTest() {
+		String plate = "acl799";
+		Mockito.when(calendar.esDiaHabil()).thenReturn(true);
+		assertTrue(watchman.plateValidToday(plate));
+	}
+
+	@Test
+	public void plateInitaValidDayFailTest() {
+		String plate = "aaa111";
+		Mockito.when(calendar.esDiaHabil()).thenReturn(false);
+		assertFalse(watchman.plateValidToday(plate));
+	}
 
 	@Test
 	public void vehicleCarDisponibilityTest() {
@@ -270,6 +284,15 @@ public class WatchmanTest {
 		String plate = CAR_PLATE;
 		Mockito.when(ticketDAO.getTicket(plate)).thenReturn(null);
 		assertFalse(watchman.isVehicleParked(plate));
+	}
+	
+	@Test
+	public void isVehicleNotParkedTest() {
+		String plate = CAR_PLATE;
+		Ticket ticket = new Ticket();
+		ticket.setExitDate(null);
+		Mockito.when(ticketDAO.getTicket(plate)).thenReturn(ticket);
+		assertTrue(watchman.isVehicleParked(plate));
 	}
 	
 //	@Test
