@@ -60,6 +60,7 @@ public class TicketDAO implements ITicketDAO {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Ticket> getTickets() {
 		try {

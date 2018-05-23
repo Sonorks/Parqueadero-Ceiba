@@ -14,7 +14,6 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import co.ceibauniversity.parkinglot.databuilder.VehicleTestDataBuilder;
 import co.ceibauniversity.parkinglot.dao.TicketDAO;
 import co.ceibauniversity.parkinglot.dao.WatchmanDAO;
 import co.ceibauniversity.parkinglot.domain.impl.Calculator;
@@ -23,7 +22,7 @@ import co.ceibauniversity.parkinglot.domain.impl.Clock;
 import co.ceibauniversity.parkinglot.domain.impl.DateFormatter;
 import co.ceibauniversity.parkinglot.domain.impl.Watchman;
 import co.ceibauniversity.parkinglot.model.Ticket;
-import co.ceibauniversity.parkinglot.model.Vehicle;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

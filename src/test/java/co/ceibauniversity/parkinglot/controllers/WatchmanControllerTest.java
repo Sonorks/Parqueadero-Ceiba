@@ -19,9 +19,6 @@ import co.ceibauniversity.parkinglot.domain.impl.Watchman;
 import co.ceibauniversity.parkinglot.exception.ParkingLotException;
 import co.ceibauniversity.parkinglot.model.Ticket;
 import co.ceibauniversity.parkinglot.model.Vehicle;
-import co.com.sc.nexura.superfinanciera.action.generic.services.trm.action.TCRMServicesInterfaceProxy;
-import co.com.sc.nexura.superfinanciera.action.generic.services.trm.action.TcrmResponse;
-
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)

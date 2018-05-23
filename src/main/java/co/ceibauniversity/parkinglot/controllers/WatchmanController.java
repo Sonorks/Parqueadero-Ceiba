@@ -1,7 +1,6 @@
 package co.ceibauniversity.parkinglot.controllers;
 
-import java.rmi.RemoteException;
-import java.util.Calendar;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,6 @@ import co.ceibauniversity.parkinglot.domain.IWatchman;
 import co.ceibauniversity.parkinglot.exception.ParkingLotException;
 import co.ceibauniversity.parkinglot.model.Ticket;
 import co.ceibauniversity.parkinglot.model.Vehicle;
-import co.com.sc.nexura.superfinanciera.action.generic.services.trm.action.TCRMServicesInterfaceProxy;
-import co.com.sc.nexura.superfinanciera.action.generic.services.trm.action.TcrmResponse;
 
 @RestController
 public class WatchmanController {
@@ -72,18 +69,5 @@ public class WatchmanController {
 			throw new ParkingLotException(VEHICLES_NOT_FOUND);
 		}
 		return tickets;
-	}
-	
-	@RequestMapping(value ="/parking/trm", method = RequestMethod.GET)
-	public String getTRM() {
-		TcrmResponse response;
-		String WDSL = "https://www.superfinanciera.gov.co/SuperfinancieraWebServiceTRM/TCRMServicesWebService/TCRMServicesWebService?WSDL";
-		TCRMServicesInterfaceProxy trmService = new TCRMServicesInterfaceProxy(WDSL);
-		try {
-			response = trmService.queryTCRM(null);
-		} catch (Exception e) {
-			throw new ParkingLotException(e.getMessage());
-		}
-		return response.getValue().toString();
 	}
 }
