@@ -105,7 +105,7 @@ public class Watchman implements IWatchman {
 		for (Ticket ticket : tickets) {
 			ticket.setEntryDate(dateFormatter.formatDate(ticket.getEntryDate()));
 		}
-		return ticketDAO.getTickets();
+		return tickets;
 	}
 	
 	@Override

@@ -1,5 +1,6 @@
 package co.ceibauniversity.parkinglot.dao;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class TicketDAO implements ITicketDAO {
 		try {
 			return (List<Ticket>) entityManager.createQuery(GET_ALL_VEHICLES_PARKED).getResultList();
 		}catch(Exception e) {
-			return null;
+			return Collections.emptyList();
 		}
 	}
 

@@ -1,6 +1,7 @@
 package co.ceibauniversity.parkinglot.controllers;
 
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +66,7 @@ public class WatchmanController {
 	@RequestMapping(value = "/parking/tickets/", method = RequestMethod.GET)
 	public List<Ticket> getTickets(){
 		List<Ticket> tickets = watchman.getTickets();
-		if(tickets == null) {
+		if(tickets.equals(Collections.emptyList())) {
 			throw new ParkingLotException(VEHICLES_NOT_FOUND);
 		}
 		return tickets;

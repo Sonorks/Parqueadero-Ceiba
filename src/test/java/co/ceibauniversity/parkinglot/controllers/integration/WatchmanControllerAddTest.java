@@ -14,8 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import co.ceibauniversity.parkinglot.databuilder.VehicleTestDataBuilder;
 import co.ceibauniversity.parkinglot.dao.TicketDAO;
+import co.ceibauniversity.parkinglot.databuilder.VehicleTestDataBuilder;
 import co.ceibauniversity.parkinglot.model.Vehicle;
 
 @RunWith(SpringRunner.class)

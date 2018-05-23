@@ -3,6 +3,7 @@ package co.ceibauniversity.parkinglot.controllers;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -191,7 +192,7 @@ public class WatchmanControllerTest {
 
 	@Test
 	public void getVehiclesExceptionTest() {
-		Mockito.when(watchman.getTickets()).thenReturn(null);
+		Mockito.when(watchman.getTickets()).thenReturn(Collections.emptyList());
 		try {
 			watchmanController.getTickets();
 			fail();
@@ -200,14 +201,4 @@ public class WatchmanControllerTest {
 		}
 	}
 	
-//	@Test
-//	public void getTrmTest() {
-//		String trm;
-//		try {
-//			trm = watchmanController.getTRM();
-//		} catch (Exception e) {
-//			throw new ParkingLotException(e.getMessage());
-//		}
-//		assertTrue(!trm.isEmpty());
-//	}
 }

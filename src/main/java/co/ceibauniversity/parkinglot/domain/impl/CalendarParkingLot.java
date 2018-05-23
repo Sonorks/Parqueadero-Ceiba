@@ -14,7 +14,7 @@ public class CalendarParkingLot implements ICalendarParkingLot {
 	
 	@Override
 	public boolean esDiaHabil() {
-		return(!(calendar.get(Calendar.DAY_OF_WEEK) > 2));
+		return(calendar.get(Calendar.DAY_OF_WEEK) <= 2);
 	}
 
 }
