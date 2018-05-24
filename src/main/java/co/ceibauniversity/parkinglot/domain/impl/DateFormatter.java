@@ -11,6 +11,7 @@ import co.ceibauniversity.parkinglot.exception.ParkingLotException;
 @Service
 public class DateFormatter implements IDateFormatter {
 
+	public static final String DATE_INVALID = "La fecha ingresada no tiene un formato valido";
 	public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 
 	@Override
@@ -20,7 +21,7 @@ public class DateFormatter implements IDateFormatter {
 		try {
 			return sdf.parse(stringDate);
 		} catch (Exception e) {
-			throw new ParkingLotException(e.getMessage());
+			throw new ParkingLotException(DATE_INVALID);
 		}
 	}
 

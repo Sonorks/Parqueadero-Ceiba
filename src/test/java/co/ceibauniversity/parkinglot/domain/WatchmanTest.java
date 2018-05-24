@@ -3,6 +3,7 @@ package co.ceibauniversity.parkinglot.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Date;
 
@@ -10,18 +11,22 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.spy;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import co.ceibauniversity.parkinglot.dao.TicketDAO;
-import co.ceibauniversity.parkinglot.dao.WatchmanDAO;
+import co.ceibauniversity.parkinglot.dao.VehicleRepository;
+import co.ceibauniversity.parkinglot.databuilder.VehicleTestDataBuilder;
 import co.ceibauniversity.parkinglot.domain.impl.Calculator;
 import co.ceibauniversity.parkinglot.domain.impl.CalendarParkingLot;
 import co.ceibauniversity.parkinglot.domain.impl.Clock;
 import co.ceibauniversity.parkinglot.domain.impl.DateFormatter;
 import co.ceibauniversity.parkinglot.domain.impl.Watchman;
+import co.ceibauniversity.parkinglot.exception.ParkingLotException;
 import co.ceibauniversity.parkinglot.model.Ticket;
+import co.ceibauniversity.parkinglot.model.Vehicle;
 
 
 @RunWith(SpringRunner.class)
@@ -42,7 +47,7 @@ public class WatchmanTest {
 	private CalendarParkingLot calendar;
 	
 	@Mock 
-	private WatchmanDAO watchmanDAO;
+	private VehicleRepository watchmanDAO;
 	
 	@Mock
 	private Clock clock;
@@ -55,9 +60,15 @@ public class WatchmanTest {
 
 	private Watchman watchman;
 
+	
+	private VehicleTestDataBuilder vehicleTestDataBuilder;
+	private Vehicle vehicle;
+	Watchman watchmanMock;
+	
 	@Before
 	public void init() {
 		watchman = new Watchman(ticketDAO, watchmanDAO, calendar, clock, dateFormatter, calculator);
+		watchmanMock = spy(watchman);
 	}
 
 	@Test
@@ -163,20 +174,16 @@ public class WatchmanTest {
 		assertFalse(watchman.vehicleDisponibility(BIKE));
 	}
 	
-	@Test
-	public void vehicleOtherDisponibilityTest() {
-		assertFalse(watchman.vehicleDisponibility(OTHER));
-	}
 	
 	@Test
 	public void calculateCarPaymentByHoursTest() {
 		double totalPrice = 0;
 		String type = CAR;
 		int totalHours = 6;
-		Mockito.when(calculator.getTotalPrice(totalHours, Watchman.CAR_DAY_PRICE, Watchman.CAR_HOUR_PRICE)).thenReturn((double) 6000);
+		Mockito.when(calculator.getTotalPrice(Vehicle.CAR, 0, totalHours, Watchman.CAR_DAY_PRICE, Watchman.CAR_HOUR_PRICE)).thenReturn((double) 6000);
 		totalPrice = watchman.calculatePayment(type, 0, totalHours);
 		
-		assertTrue(totalPrice == 6000);
+		assertEquals(totalPrice,6000,0);
 	}
 	
 	@Test
@@ -184,7 +191,7 @@ public class WatchmanTest {
 		double totalPrice = 0;
 		String type = BIKE;
 		int totalHours = 6;
-		Mockito.when(calculator.getTotalPrice(totalHours, Watchman.BIKE_DAY_PRICE, Watchman.BIKE_HOUR_PRICE)).thenReturn((double) 3000);
+		Mockito.when(calculator.getTotalPrice(Vehicle.BIKE, 0, totalHours, Watchman.BIKE_DAY_PRICE, Watchman.BIKE_HOUR_PRICE)).thenReturn((double) 3000);
 		totalPrice = watchman.calculatePayment(type, 0, totalHours);
 		
 		assertTrue(totalPrice == 3000);
@@ -195,7 +202,7 @@ public class WatchmanTest {
 		double totalPrice = 0;
 		String type = CAR;
 		int totalHours = 10;
-		Mockito.when(calculator.getTotalPrice(totalHours, Watchman.CAR_DAY_PRICE, Watchman.CAR_HOUR_PRICE)).thenReturn((double) 8000);
+		Mockito.when(calculator.getTotalPrice(Vehicle.CAR, 0, totalHours, Watchman.CAR_DAY_PRICE, Watchman.CAR_HOUR_PRICE)).thenReturn((double) 8000);
 		totalPrice = watchman.calculatePayment(type, 0, totalHours);
 		
 		assertTrue(totalPrice == 8000);
@@ -206,10 +213,10 @@ public class WatchmanTest {
 		double totalPrice = 0;
 		String type = BIKE;
 		int totalHours = 10;
-		Mockito.when(calculator.getTotalPrice(totalHours, Watchman.BIKE_DAY_PRICE, Watchman.BIKE_HOUR_PRICE)).thenReturn((double) 4000);
+		Mockito.when(calculator.getTotalPrice(Vehicle.BIKE, 0, totalHours, Watchman.BIKE_DAY_PRICE, Watchman.BIKE_HOUR_PRICE)).thenReturn((double) 4000);
 		totalPrice = watchman.calculatePayment(type, 0, totalHours);
 		
-		assertTrue(totalPrice == 4000);
+		assertEquals(totalPrice,4000,0);
 	}
 	
 	@Test 
@@ -217,7 +224,7 @@ public class WatchmanTest {
 		double totalPrice = 0;
 		String type = CAR;
 		int totalHours = 30;
-		Mockito.when(calculator.getTotalPrice(totalHours, Watchman.CAR_DAY_PRICE, Watchman.CAR_HOUR_PRICE)).thenReturn((double) 14000);
+		Mockito.when(calculator.getTotalPrice(Vehicle.CAR, 0, totalHours, Watchman.CAR_DAY_PRICE, Watchman.CAR_HOUR_PRICE)).thenReturn((double) 14000);
 		totalPrice = watchman.calculatePayment(type, 0, totalHours); 	
 		
 		assertTrue(totalPrice == 14000);
@@ -228,7 +235,7 @@ public class WatchmanTest {
 		double totalPrice = 0;
 		String type = CAR;
 		int totalHours = 34;
-		Mockito.when(calculator.getTotalPrice(totalHours, Watchman.CAR_DAY_PRICE, Watchman.CAR_HOUR_PRICE)).thenReturn((double) 16000);
+		Mockito.when(calculator.getTotalPrice(Vehicle.CAR, 0, totalHours, Watchman.CAR_DAY_PRICE, Watchman.CAR_HOUR_PRICE)).thenReturn((double) 16000);
 		totalPrice = watchman.calculatePayment(type, 0, totalHours); 	
 		
 		assertTrue(totalPrice == 16000);
@@ -239,7 +246,7 @@ public class WatchmanTest {
 		double totalPrice = 0;
 		String type = BIKE;
 		int totalHours = 28;
-		Mockito.when(calculator.getTotalPrice(totalHours, Watchman.BIKE_DAY_PRICE, Watchman.BIKE_HOUR_PRICE)).thenReturn((double) 6000);
+		Mockito.when(calculator.getTotalPrice(Vehicle.BIKE, 0, totalHours, Watchman.BIKE_DAY_PRICE, Watchman.BIKE_HOUR_PRICE)).thenReturn((double) 6000);
 		totalPrice = watchman.calculatePayment(type, 0, totalHours); 	
 		assertTrue(totalPrice == 6000);
 	}
@@ -250,10 +257,10 @@ public class WatchmanTest {
 		String type = BIKE;
 		int CC = 650;
 		int totalHours = 28;
-		Mockito.when(calculator.getTotalPrice(totalHours, Watchman.BIKE_DAY_PRICE, Watchman.BIKE_HOUR_PRICE)).thenReturn((double) 6000);
+		Mockito.when(calculator.getTotalPrice(Vehicle.BIKE, CC, totalHours, Watchman.BIKE_DAY_PRICE, Watchman.BIKE_HOUR_PRICE)).thenReturn((double) 8000);
 		totalPrice = watchman.calculatePayment(type, CC, totalHours); 	
 		
-		assertTrue(totalPrice==8000);
+		assertEquals(totalPrice,8000,0);
 	}
 	
 	@Test 
@@ -262,7 +269,7 @@ public class WatchmanTest {
 		String type = BIKE;
 		int CC = 650;
 		int totalHours = 4;
-		Mockito.when(calculator.getTotalPrice(totalHours, Watchman.BIKE_DAY_PRICE, Watchman.BIKE_HOUR_PRICE)).thenReturn((double) 2000);
+		Mockito.when(calculator.getTotalPrice(Vehicle.BIKE, CC, totalHours, Watchman.BIKE_DAY_PRICE, Watchman.BIKE_HOUR_PRICE)).thenReturn((double) 4000);
 		totalPrice = watchman.calculatePayment(type, CC, totalHours); 	
 		
 		assertTrue(totalPrice == 4000);
@@ -295,14 +302,88 @@ public class WatchmanTest {
 		assertTrue(watchman.isVehicleParked(plate));
 	}
 	
-//	@Test
-//	public void addVehicleTest() {
-//		VehicleTestDataBuilder vehicleTestDataBuilder = new VehicleTestDataBuilder();
-//		Vehicle vehicle = vehicleTestDataBuilder.build();
-//		Ticket ticket = new Ticket(vehicle.getType(), vehicle.getPlate(), vehicle.getCc(), new Date());
-//		Mockito.when(ticketDAO.addTicket(ticket)).thenReturn(true);
-//		
-//		assertEquals(watchman.addVehicle(vehicle),true);
-//	}
+	@Test
+	public void addVehicleAlreadyParked() {
+		String type = "BIKE";
+		vehicleTestDataBuilder = new VehicleTestDataBuilder().usingType(type);
+		vehicle = vehicleTestDataBuilder.build();
+		
+		Mockito.doReturn(true).when(watchmanMock).vehicleTypeAllowed(vehicle.getType());
+		Mockito.doReturn(true).when(watchmanMock).vehicleDisponibility(vehicle.getType());
+		Mockito.doReturn(true).when(watchmanMock).plateValidToday(vehicle.getPlate());
+		Mockito.doReturn(true).when(watchmanMock).isVehicleParked(vehicle.getPlate());
+		try {
+			watchmanMock.addVehicle(vehicle);
+			fail();
+		}catch(ParkingLotException e) {
+			assertEquals(Watchman.VEHICLE_ALREADY_PARKED, e.getMessage());
+		}
+	}
+	
+	@Test
+	public void addVehicleNotTypeAllowedTest() {
+		vehicleTestDataBuilder = new VehicleTestDataBuilder().usingType(OTHER);
+		vehicle = vehicleTestDataBuilder.build();
+
+		Mockito.doReturn(false).when(watchmanMock).vehicleTypeAllowed(vehicle.getType());
+		try {
+			watchmanMock.addVehicle(vehicle);
+			fail();
+		}catch(ParkingLotException e) {
+			assertEquals(Watchman.TYPE_NOT_ALLOWED, e.getMessage());
+		}
+	}
+	
+	@Test
+	public void addVehicleNotAllowedDayTest() {
+		vehicleTestDataBuilder = new VehicleTestDataBuilder();
+		vehicle = vehicleTestDataBuilder.build();
+		
+		Mockito.doReturn(true).when(watchmanMock).vehicleTypeAllowed(vehicle.getType());
+		Mockito.doReturn(true).when(watchmanMock).vehicleDisponibility(vehicle.getType());
+		Mockito.doReturn(false).when(watchmanMock).plateValidToday(vehicle.getPlate());	
+		try {
+			watchmanMock.addVehicle(vehicle);
+			fail();
+		}catch(ParkingLotException e) {
+			assertEquals(Watchman.NOT_BUSINESS_DAY, e.getMessage());
+		}
+	}
+	
+	@Test
+	public void addVehicleBikeNoSpaceTest() {
+		//arrange
+		String type = "BIKE";
+		vehicleTestDataBuilder = new VehicleTestDataBuilder().usingType(type);
+		vehicle = vehicleTestDataBuilder.build();
+		Mockito.doReturn(true).when(watchmanMock).vehicleTypeAllowed(vehicle.getType());
+		Mockito.doReturn(false).when(watchmanMock).vehicleDisponibility(vehicle.getType());
+		try {
+			watchmanMock.addVehicle(vehicle);
+			fail();
+		}catch(ParkingLotException e) {
+			assertEquals(Watchman.NO_SPACE, e.getMessage());
+		}
+	}
+	
+	@Test
+	public void addVehicleCarNoSpaceTest() {
+		//arrange
+		vehicleTestDataBuilder = new VehicleTestDataBuilder();
+		vehicle = vehicleTestDataBuilder.build();
+		Mockito.doReturn(true).when(watchmanMock).vehicleTypeAllowed(vehicle.getType());
+		Mockito.doReturn(false).when(watchmanMock).vehicleDisponibility(vehicle.getType());
+		//act
+		try {
+			watchmanMock.addVehicle(vehicle);
+			fail();
+		}catch(ParkingLotException e) {
+			assertEquals(Watchman.NO_SPACE, e.getMessage());
+		}
+	}
+	
+
+	
+
 	
 }

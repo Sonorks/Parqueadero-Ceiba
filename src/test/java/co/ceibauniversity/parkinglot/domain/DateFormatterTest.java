@@ -25,5 +25,18 @@ public class DateFormatterTest {
 		Date dateFormatted = dateFormatter.formatDate(new Date(118,4,21,12,10,55));
 		assertEquals(dateFormatted,date);
 	}
+	
+	@Test
+	public void formatDateFailTest() {
+		Date date = new Date(118,4,21,12,10);
+		
+		try {
+			Date dateFormatted = dateFormatter.formatDate(null);
+			fail();
+		} catch (Exception e) {
+			assertEquals(e.getMessage(),null);
+		}
+	}
+
 
 }

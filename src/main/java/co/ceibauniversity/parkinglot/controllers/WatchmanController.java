@@ -20,11 +20,7 @@ import co.ceibauniversity.parkinglot.model.Vehicle;
 public class WatchmanController {
 	
 	public static final String VEHICLES_NOT_FOUND = "No hay vehiculos en el parqueadero";
-	public static final String NOT_BUSINESS_DAY = "No puede ingresar porque no es un dia habil.";
-	public static final String TYPE_NOT_ALLOWED = "No puede ingresar porque este tipo de vehiculo no es permitido.";
-	public static final String NO_SPACE = "No puede ingresar porque no hay espacio en el parqueadero.";
 	public static final String VEHICLE_NOT_FOUND = "El vehiculo buscado no se encuentra en el parqueadero";
-	public static final String VEHICLE_ALREADY_PARKED = "El vehiculo ya se encuentra parqueado.";
 	
 	
 	
@@ -32,26 +28,13 @@ public class WatchmanController {
 	private IWatchman watchman;
 
 	@RequestMapping(value = "/parking/addVehicle", method = RequestMethod.POST)
-	public boolean addVehicle(@RequestBody Vehicle vehicle) {
-		if(!watchman.vehicleTypeAllowed(vehicle.getType())) {
-			throw new ParkingLotException(TYPE_NOT_ALLOWED);
-		}
-		if(!watchman.vehicleDisponibility(vehicle.getType())) {
-			throw new ParkingLotException(NO_SPACE);
-		}
-		if(!watchman.plateValidToday(vehicle.getPlate())) {
-			throw new ParkingLotException(NOT_BUSINESS_DAY);
-		}
-		if(watchman.isVehicleParked(vehicle.getPlate())) {
-			throw new ParkingLotException(VEHICLE_ALREADY_PARKED);
-		}
+	public void addVehicle(@RequestBody Vehicle vehicle) {
 		watchman.addVehicle(vehicle);
-		return true;
 	}
 
 	@RequestMapping(value ="/parking/removeVehicle/{plate}", method = RequestMethod.POST)
-	public boolean removeVehicle(@PathVariable String plate) {
-		return watchman.removeVehicle(plate);
+	public void removeVehicle(@PathVariable String plate) {
+		watchman.removeVehicle(plate);
 	}
 	
 	@RequestMapping(value = "/parking/ticket/{plate}", method = RequestMethod.GET)

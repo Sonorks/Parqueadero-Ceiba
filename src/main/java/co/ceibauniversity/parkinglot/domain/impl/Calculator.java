@@ -3,13 +3,15 @@ package co.ceibauniversity.parkinglot.domain.impl;
 import org.springframework.stereotype.Service;
 
 import co.ceibauniversity.parkinglot.domain.ICalculator;
+import co.ceibauniversity.parkinglot.model.Vehicle;
 
 @Service
 public class Calculator implements ICalculator {
 
 	@Override
-	public double getTotalPrice(int totalHours, double priceDay, double priceHour) {
+	public double getTotalPrice(String type, int cc, int totalHours, double priceDay, double priceHour) {
 		double totalPrice;
+		System.out.println("En getTotalPrice");
 		if(totalHours >= Watchman.MIN_HOURS_TO_PAY_BY_DAY && totalHours <= Watchman.MAX_HOURS_TO_PAY_BY_DAY) {
 			totalPrice = priceDay;
 		} else if (totalHours > Watchman.MAX_HOURS_TO_PAY_BY_DAY){
@@ -21,6 +23,11 @@ public class Calculator implements ICalculator {
 			}
 		} else {
 			totalPrice = totalHours * priceHour;
+		}
+		if(type.equals(Vehicle.BIKE)) {
+			if(cc>Watchman.MAX_CC) {
+				totalPrice += Watchman.EXTRA_CC_COST;
+			}
 		}
 		return totalPrice;
 	}

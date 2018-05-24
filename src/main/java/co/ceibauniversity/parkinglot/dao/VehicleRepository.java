@@ -12,7 +12,7 @@ import co.ceibauniversity.parkinglot.exception.ParkingLotException;
 
 @Transactional
 @Repository
-public class WatchmanDAO implements IWatchmanDAO {
+public class VehicleRepository implements IVehicleRepository {
 	
 	public static final String COUNT_BIKESLOTS_QUERY = "SELECT COUNT(*) - COUNT(exit_date) FROM Ticket as ticket WHERE ticket.type = 'BIKE'";
 	public static final String COUNT_CARSLOTS_QUERY = "SELECT COUNT(*) - COUNT(exit_date) FROM Ticket as ticket WHERE ticket.type = 'CAR'";

@@ -49,12 +49,10 @@ public class WatchmanControllerRemoveTest {
 	
 	@Test
 	public void removeVehicleTest() {
-		ResponseEntity<Boolean> responseEntity = 
-				restTemplate.postForEntity("http://localhost:"+randomServerPort+"/parking/removeVehicle/REMOVETHIS", null, Boolean.class);
-		boolean respuesta = responseEntity.getBody();
+		ResponseEntity<Object> responseEntity = 
+				restTemplate.postForEntity("http://localhost:"+randomServerPort+"/parking/removeVehicle/REMOVETHIS", null, null);
 		
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(true,respuesta);
 	}
 
 

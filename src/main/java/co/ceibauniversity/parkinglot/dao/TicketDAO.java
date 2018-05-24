@@ -10,8 +10,10 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.ceibauniversity.parkinglot.dao.ITicketDAO;
 import co.ceibauniversity.parkinglot.exception.ParkingLotException;
 import co.ceibauniversity.parkinglot.model.Ticket;
+
 
 @Transactional
 @Repository
